@@ -90,6 +90,3 @@ def get_submissions(course_ids, coursework_ids):
 testclass = ClassMasteryData('Code Nation Test')
 
 print(testclass.class_name)
-print(testclass.id)
-print(testclass.coursework)
-print(testclass.submissions)
