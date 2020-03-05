@@ -68,41 +68,41 @@ class Submission(Classwork):
         self.assignedGrade = self.get_assignedGrade()
         self.id = self.get_id()
         self.maxPoints = self.get_maxPoints()    
-        self.courseid = classmasterydata.get_class_id()
+        self.courseId = self.get_class_id()
         self.classId = Classwork.get_class_id(self)
     
     def get_draftGrade(self):
-        return json.dumps(self.submissions)['draftGrade']
+        return self.submissions[0]['studentSubmissions'][0]['draftGrade']
        
     def get_updateTime(self):
-        return json.dumps(self.submissions)['updateTime']
+        return self.submissions[0]['studentSubmissions'][0]['updateTime']
 
     def get_alternateLink(self):
-        return json.dumps(self.submissions)['alternateLink']
+        return self.submissions[0]['studentSubmissions'][0]['alternateLink']
 
     def get_userId(self):
-        return json.dumps(self.submissions)['userId']
+        return self.submissions[0]['studentSubmissions'][0]['userId']
 
     def get_creationTime(self):
-        return json.dumps(self.submissions)['creationTime']
+        return self.submissions[0]['studentSubmissions'][0]['creationTime']
 
     def get_state(self):
-        return json.dumps(self.submissions)['state']
+        return self.submissions[0]['studentSubmissions'][0]['state']
    
     def get_courseWorkId(self):
-        return json.dumps(self.submissions)['courseWorkId']
+        return self.submissions[0]['studentSubmissions'][0]['courseWorkId']
    
     def get_courseWorkType(self):
-        return json.dumps(self.submissions)['courseWorkType']
+        return self.submissions[0]['studentSubmissions'][0]['courseWorkType']
   
     def get_assignedGrade(self):
-        return json.dumps(self.submissions)['assignedGrade']
+        return self.submissions[0]['studentSubmissions'][0]['assignedGrade']
 
     def get_id(self):
-        return json.dumps(self.submissions)['id']
+        return self.submissions[0]['studentSubmissions'][0]['id']
   
     def get_maxPoints(self):
-        return json.dumps(self.submissions)['gradeHistory']['maxPoints']
+        return self.submissions[0]['studentSubmissions'][0]['submissionHistory'][2]['gradeHistory']['maxPoints']
     
     
 
@@ -157,12 +157,20 @@ def get_submissions(course_ids, coursework_ids):
 #raw_submissions = get_submissions(ids, cw_ids)
 #submissions = raw_submissions[0]['studentSubmissions']
 
-"""testclass = ClassMasteryData('Code Nation Test')
-testclass2 = ClassMasteryData('Opportunity Hack Dummy')
-c2 = service.courses().get(id=testclass2.id).execute()
-c = service.courses().get(id=testclass.id).execute()
-print(testclass.class_name , c['name'])
-print(testclass2.class_name, c2['name'])"""
+#testclass = ClassMasteryData('Code Nation Test')
+#testclass2 = ClassMasteryData('Opportunity Hack Dummy')
+#c2 = service.courses().get(id=testclass2.id).execute()
+#c = service.courses().get(id=testclass.id).execute()
+#print(testclass.class_name , c['name'])
+#print(testclass2.class_name, c2['name'])
+
+#testclass = ClassMasteryData('Code Nation Test')
+#print(testclass.submissions)
 
 mySubmission = Submission('Code Nation Test')
 print(mySubmission.id, mySubmission.assignedGrade, mySubmission.maxPoints)
+
+
+
+
+
