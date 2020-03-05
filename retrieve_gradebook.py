@@ -21,14 +21,10 @@ class ClassMasteryData:
         self.coursework = self.get_coursework()
         self.submissions = self.get_submissions(self.coursework)
 
-    #there is something wrong here. it is retreiving the wrong id!
     def get_class_id(self):
         my_courses = get_courses()
         for course in my_courses:
-            print("current course: ", course)
             if(json.dumps(course[0]).find(self.class_name)!= -1):
-                print(self.class_name, " found in string: ", json.dumps(course[0])) 
-                print("accessed course name: ", course[0], "class name: ", self.class_name)
                 self.id = json.dumps(course[1]).strip('"')
         return self.id
         
@@ -37,6 +33,7 @@ class ClassMasteryData:
         self.coursework = get_coursework(aslist)
         return self.coursework
 
+    #this needs to be edited to return a dict or list of submissions tied to each course
     def get_submissions(self, coursework_id):
         coursework_id_i = [coursework_id[0]['courseWork'][0]['id']]
         self.submissions = get_submissions([self.id], coursework_id_i)
