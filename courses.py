@@ -21,7 +21,6 @@ class Course:
         self.courseId = self.get_courseId()
         self.courseWork = self.get_courseWork()
         self.data = get_course(self.courseId)
-        print(self.data)
         self.description = self.get_description()
         self.updateTime = self.get_updateTime()
         self.name = self.get_name()
@@ -41,9 +40,6 @@ class Course:
             else:
                 continue
         return self.courseId
-    
-    def test(self):
-        print(self.data)
     
     def get_courseWork(self):
         return get_course_courseWork(self.courseId)
@@ -93,10 +89,11 @@ class Course:
 
 class CourseWork(Course):
     def __init__(self, name, courseWorkId):
-        Course.__init__(self, name)
+        self.user_courses = get_user_courses()
+        self.name = name
         self.courseId = Course.get_courseId(self)
         self.courseWorkId = courseWorkId
-        self.courseWorkData = get_courseWork(self.courseId)
+        self.courseWorkData = get_courseWork(self.courseId, self.courseWorkId)
         self.courseWork_submissions = get_courseWork_submissions(self.courseId, self.courseWorkId)
         self.updateTime = self.get_updateTime()
         self.assigneeMode = self.get_assigneeMode()
@@ -172,13 +169,15 @@ class CourseWork(Course):
 
     def submissionGen(self):
         submissionObjs = []
-        for submission in self.courseWork_submissions:
+        for submission in self.courseWork_submissions['studentSubmissions']:
+            print 'TESTING SUBMISSIONS'
+            print submission
+            print self.courseWork_submissions
             submissionObjs.append(Submission(self.name, self.courseWorkId, submission['id']))
         return submissionObjs
 
 class Submission(CourseWork):
     def __init__(self, name, courseWorkId, submissionId):
-        CourseWork.__init__(self, name, courseWorkId)
         self.courseId = Course.get_courseId()
         self.courseWorkId = courseWorkId
         self.courseWork_submissions = get_courseWork_submissions(self.courseId, self.courseWorkId)
@@ -237,7 +236,7 @@ def get_courseWork(courseId, id):
     return service.courses().courseWork().get(courseId=courseId, id=id).execute()
 
 def get_studentSubmission(courseId, courseWorkId, id):
-    return service.courses().courseWork().studentSubmissions().get(courseId=courseId, courseWorkId=courseWorkId, id=id)
+    return service.courses().courseWork().studentSubmissions().get(courseId=courseId, courseWorkId=courseWorkId, id=id).execute()
 
 def get_courseWork_submissions(courseId, courseWorkId):
     return service.courses().courseWork().studentSubmissions().list(courseId=courseId, courseWorkId=courseWorkId).execute()
