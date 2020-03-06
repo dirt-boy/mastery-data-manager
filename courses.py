@@ -20,6 +20,8 @@ class Course:
         self.user_courses = get_user_courses()
         self.courseId = self.get_courseId()
         self.courseWork = self.get_courseWork()
+        self.data = get_course(self.courseId)
+        print(self.data)
         self.description = self.get_description()
         self.updateTime = self.get_updateTime()
         self.name = self.get_name()
@@ -34,18 +36,23 @@ class Course:
 
     def get_courseId(self):
         for course in self.user_courses:
-            if(json.dumps(course[0]).find(self.name)!= -1):
-                courseId = json.dumps(course[1]).strip('"')
+            if(json.dumps(course).find(self.name)!= -1):
+               self.courseId = course['id']
             else:
-                courseId = None
-        self.courseId = courseId
+                continue
         return self.courseId
-        
+    
+    def test(self):
+        print(self.data)
+    
     def get_courseWork(self):
-        return get_course_courseWork(self.course_id)
+        return get_course_courseWork(self.courseId)
 
     def get_description(self):
-        return self.data['description']
+        try:
+            return self.data['description']
+        except:
+            pass
 
     def get_updateTime(self):
         return self.data['updateTime']
@@ -217,13 +224,14 @@ class Submission(CourseWork):
         return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['submissionHistory'][2]['gradeHistory']['maxPoints']
 
 def get_user_courses():
-    return service.courses().list().execute()
+    return service.courses().list().execute()['courses']
 
 def get_course_courseWork(courseId):
-    return service.courses().courseWork().list(courseId).execute()
+    return service.courses().courseWork().list(courseId=courseId).execute()
 
 def get_course(id):
     return service.courses().get(id=id).execute()
+
 
 def get_courseWork(courseId, id):
     return service.courses().courseWork().get(courseId=courseId, id=id).execute()
