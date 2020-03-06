@@ -15,54 +15,82 @@ SCOPES = ['https://www.googleapis.com/autih/classroom.coursework.students https:
 service = Create_Service(CLIENT_SECRET_FILE, API_SERVICE_NAME, API_VERSION, SCOPES)
 
 class Course:
-    def __init__(self,class_name):
-        self.class_name = class_name
-        self.id = self.get_class_id()
+    def __init__(self, name):
+        self.name = name
+        self.user_courses = get_user_courses()
+        self.courseId = self.get_courseId()
+        self.courseWork = self.get_courseWork()
+        self.description = self.get_description()
+        self.updateTime = self.get_updateTime()
+        self.name = self.get_name()
+        self.alternateLink = self.get_alternateLink()
+        self.enrollmentCode = self.get_enrollmentCode()
+        self.courseGroupEmail = self.get_courseGroupEmail()
+        self.section = self.get_section()
+        self.teacherGroupEmail = self.get_teacherGroupEmail()
+        self.ownerId = self.get_ownerId()
+        self.calendarId = self.get_calendarId()
+        self.teacherFolder = self.get_teacherFolder()
 
-    def get_class_id(self):
-        my_courses = get_courses()
-        for course in my_courses:
-            if(json.dumps(course[0]).find(self.class_name)!= -1):
-                self.id = json.dumps(course[1]).strip('"')
-        return self.id
+    def get_courseId(self):
+        for course in self.user_courses:
+            if(json.dumps(course[0]).find(self.name)!= -1):
+                courseId = json.dumps(course[1]).strip('"')
+            else:
+                courseId = None
+        self.courseId = courseId
+        return self.courseId
         
-    def get_coursework(self):
-        courseworks = []
-        aslist = [self.id]
-        self.coursework = get_coursework(aslist)
-        for course in self.coursework[0]['courseWork']:
-            courseworks.append(CourseWork(self.class_name, course['id']))
-        self.coursework = courseworks
-        return self.coursework
-	
-    def get_coursework_data(self):
-        courseworks = []
-        aslist = [self.id]
-        self.coursework = get_coursework(aslist)
-        for course in self.coursework[0]['courseWork']:
-            courseworks.append(course)
-        self.coursework = courseworks
-        return self.coursework
-   
+    def get_courseWork(self):
+        return get_course_courseWork(self.course_id)
 
-    #this needs to be edited to return a dict or list of submissions tied to each course
-    def get_submissions(self, coursework):
-        #coursework_id = [coursework[0]['courseWork'][0]['id']]
-        l_submissions = []
-        coursework_ids = isolate_cw_ids(coursework)
-        for id in coursework_ids:
-            l_submissions.append(service.courses().courseWork().studentSubmissions().list(courseId=self.id, courseWorkId=id).execute())
-        self.submissions = l_submissions
-        return self.submissions
+    def get_description(self):
+        return self.data['description']
+
+    def get_updateTime(self):
+        return self.data['updateTime']
+
+    def get_name(self):
+        return self.data['name']
+
+    def get_alternateLink(self):
+        return self.data['alternateLink']
+
+    def get_enrollmentCode(self):
+        return self.data['enrollmentCode']
+
+
+    def get_courseGroupEmail(self):
+        return self.data['courseGroupEmail']
+
+    def get_section(self):
+        return self.data['section']
+
+    def get_teacherGroupEmail(self):
+        return self.data['teacherGroupEmail']
+
+    def get_ownerId(self):
+        return self.data['ownerId']
+
+    def get_calendarId(self):
+        return self.data['calendarId']
+
+    def get_teacherFolder(self):
+        return self.data['teacherFolder']
+
+    def courseWorkGen(self):
+        courseWorkObjs = []
+        for course in self.courseWork['courseWork']:
+            courseWorkObjs.append(CourseWork(self.name, course['id']))
+        return courseWorkObjs
 
 class CourseWork(Course):
-    def __init__(self, class_name, courseWorkId):
-        Course.__init__(self, class_name)
-        self.data = Course.get_coursework_data(self)
-        self.submissions = Course.get_submissions(self, self.data)
-        self.courseId = Course.get_class_id(self)
+    def __init__(self, name, courseWorkId):
+        Course.__init__(self, name)
+        self.courseId = Course.get_courseId(self)
         self.courseWorkId = courseWorkId
-        self.l_submissions = []
+        self.courseWorkData = get_courseWork(self.courseId)
+        self.courseWork_submissions = get_courseWork_submissions(self.courseId, self.courseWorkId)
         self.updateTime = self.get_updateTime()
         self.assigneeMode = self.get_assigneeMode()
         self.creatorUserId = self.get_creatorUserId()
@@ -135,26 +163,18 @@ class CourseWork(Course):
         except:
             pass
 
-    def make_submissions(self):
-        l_submissions = []
-        for submission in self.submissions[0]['studentSubmissions']:
-            l_submissions.append(Submission(self.class_name, submission['id']))
-        self.l_submissions = l_submissions
-        return self.l_submissions
-
-    def describe(self):
-        print("Class Name: ", self.class_name)
-        print("Course Work: ", self.coursework)
-        print("Submissions: ", self.l_submissions)
-      
-         
-
-        
-
+    def submissionGen(self):
+        submissionObjs = []
+        for submission in self.courseWork_submissions:
+            submissionObjs.append(Submission(self.name, self.courseWorkId, submission['id']))
+        return submissionObjs
 
 class Submission(CourseWork):
-    def __init__(self, class_name, s_id):
-        CourseWork.__init__(self, class_name)
+    def __init__(self, name, courseWorkId, submissionId):
+        CourseWork.__init__(self, name, courseWorkId)
+        self.courseId = Course.get_courseId()
+        self.courseWorkId = courseWorkId
+        self.courseWork_submissions = get_courseWork_submissions(self.courseId, self.courseWorkId)
         self.draftGrade =self.get_draftGrade()
         self.updateTime = self.get_updateTime()
         self.alternateLink = self.get_alternateLink()
@@ -164,7 +184,7 @@ class Submission(CourseWork):
         self.courseWorkType = self.get_courseWorkType()
         self.assignedGrade = self.get_assignedGrade()
         self.maxPoints = self.get_maxPoints()    
-        self.s_id = s_id        
+        self.submissionId = submissionId        
 
     def get_draftGrade(self):
         return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['draftGrade']
@@ -195,16 +215,12 @@ class Submission(CourseWork):
 
     def get_maxPoints(self):
         return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['submissionHistory'][2]['gradeHistory']['maxPoints']
-    
-    
 
-def get_courses():
-    raw_response_data = service.courses().list().execute()
-    response_data = raw_response_data['courses']
-    l_response = []
-    for course in response_data:
-        l_response.append((course['name'], course['id']))
-    return l_response
+def get_user_courses():
+    return service.courses().list().execute()
+
+def get_course_courseWork(courseId):
+    return service.courses().courseWork().list(courseId).execute()
 
 def get_course(id):
     return service.courses().get(id=id).execute()
@@ -215,56 +231,17 @@ def get_courseWork(courseId, id):
 def get_studentSubmission(courseId, courseWorkId, id):
     return service.courses().courseWork().studentSubmissions().get(courseId=courseId, courseWorkId=courseWorkId, id=id)
 
-
-def isolate_ids(courses):
-    ids = []
-    for course in courses:
-        ids.append(course[1])
-    return ids
-
-def get_coursework(course_ids):
-    raw_response_data = []
-    for i in range(len(course_ids)):
-        id = course_ids[i]
-        raw_response_data.append(service.courses().courseWork().list(courseId=id).execute())
-    return json.loads(json.dumps(raw_response_data))
-
-def isolate_cw_ids(coursework):
-    ids = []
-    try:
-        for work in coursework[0]['courseWork']:
-            print coursework
-            print coursework[0]
-            print coursework[0]['courseWork']
-            #ids.append(work['id'])
-    except:
-        pass
-    return ids
-
-def get_submissions(course_ids, coursework_ids):
-    raw_response_data = []
-    for i in range(len(course_ids)):
-        for j in range(len(coursework_ids)):
-            try:
-                raw_response_data.append(service.courses().courseWork().studentSubmissions().list(courseId=course_ids[i], courseWorkId=coursework_ids[j]).execute())
-                return raw_response_data
-            except HttpError as err:
-                if err.resp.status in [403, 500, 503]:
-                    time.sleep(5)
-                else: raise
+def get_courseWork_submissions(courseId, courseWorkId):
+    return service.courses().courseWork().studentSubmissions().list(courseId=courseId, courseWorkId=courseWorkId).execute()
 
 
 def getCourse(courseName):
-    n_course = Course(courseName)
-    #n_courseWork is a LIST of COURSEWORK
-    #n_courseWorkData is a LIST of DICTS
-    n_courseWorkData = n_course.get_coursework_data()
-    n_courseWork = n_course.get_coursework()
-    n_submissions = []
-    for  c in n_courseWork:
-        print type(c)
-        n_submissions.append(c.make_submissions())
-    return {'Course': n_course, 'CourseWork': n_courseWork, 'Submissions': n_submissions}    
+    c = Course(courseName)
+    cw = c.courseWorkGen()
+    s = []
+    for w in cw:
+        s.append(w.submissionGen())
+    return {'Course': c, 'CourseWork':cw, 'Submissions':s}
 
 
 getCourse('Code Nation Test')
