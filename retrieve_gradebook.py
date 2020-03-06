@@ -67,8 +67,61 @@ class CourseWork(Course):
         self.materials = self.get_materials()
         
     def get_updateTime(self):
-        return get_courseWork(self.courseId, self.courseWorkId) 
+        return get_courseWork(self.courseId, self.courseWorkId)['updateTime'] 
 
+    def get_assigneeMode(self):
+        return get_courseWork(self.courseId, self.courseWorkId)['assigneeMode']
+    
+    def get_creatorUserId(self):
+        return get_courseWork(self.courseId, self.courseWorkId)['creatorUserId']
+
+    def get_dueDate(self):
+        try:
+            return get_courseWork(self.courseId, self.courseWorkId)['dueDate']
+        except:
+            pass
+
+    def get_state(self):
+        return get_courseWork(self.courseId, self.courseWorkId)['state']
+
+    def get_dueTime(self):
+        try:
+            return get_courseWork(self.courseId, self.courseWorkId)['dueTime']
+        except:
+            pass
+
+    def get_topicId(self):
+        try:
+            return get_courseWork(self.courseId, self.courseWorkId)['topicId']
+        except:
+            pass
+ 
+    def get_description(self):
+        return get_courseWork(self.courseId, self.courseWorkId)['description']
+
+    def get_studentWorkFolder(self):
+        try:
+            return get_courseWork(self.courseId, self.courseWorkId)['studentWorkFolder']
+        except:
+            pass
+
+    def get_title(self):
+        return get_courseWork(self.courseId, self.courseWorkId)['title']
+
+    def get_maxPoints(self):
+        return get_courseWork(self.courseId, self.courseWorkId)['maxPoints']
+
+    def get_workType(self):
+        return get_courseWork(self.courseId, self.courseWorkId)['workType']
+
+    def get_alternateLink(self):
+        return get_courseWork(self.courseId, self.courseWorkId)['alternateLink']
+
+    def get_materials(self):
+        try:
+            return get_courseWork(self.courseId, self.courseWorkId)['materials']    
+        except:
+            pass
 
     def make_submissions(self):
         l_submissions = []
@@ -197,6 +250,10 @@ myCourse = Course('Code Nation Test')
 def describe(course):
     courseworks = myCourse.get_coursework()
     for coursework in courseworks:
-        print(coursework)
+        print(coursework.class_name)
+        print(coursework.title)
+        print(coursework.description)
+        print(coursework.maxPoints)
+        
        
 describe(myCourse) 
