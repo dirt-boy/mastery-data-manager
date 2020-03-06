@@ -66,7 +66,8 @@ class CourseWork(Course):
         self.alternateLink = self.get_alternateLink()
         self.materials = self.get_materials()
         
-    def 
+    def get_updateTime(self):
+        return get_courseWork(self.courseId, self.courseWorkId) 
 
 
     def make_submissions(self):
@@ -196,7 +197,6 @@ myCourse = Course('Code Nation Test')
 def describe(course):
     courseworks = myCourse.get_coursework()
     for coursework in courseworks:
-        print coursework
-   
+        print(coursework)
        
 describe(myCourse) 
