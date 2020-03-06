@@ -10,7 +10,7 @@ from googleapiclient.errors import HttpError
 CLIENT_SECRET_FILE = 'client_secret.json'
 API_SERVICE_NAME = 'classroom'
 API_VERSION = 'v1'
-SCOPES = ['https://www.googleapis.com/auth/classroom.coursework.students https://www.googleapis.com/auth/classroom.courses']
+SCOPES = ['https://www.googleapis.com/autih/classroom.coursework.students https://www.googleapis.com/auth/classroom.courses']
 
 service = Create_Service(CLIENT_SECRET_FILE, API_SERVICE_NAME, API_VERSION, SCOPES)
 
@@ -34,6 +34,16 @@ class Course:
             courseworks.append(CourseWork(self.class_name, course['id']))
         self.coursework = courseworks
         return self.coursework
+	
+    def get_coursework_data(self):
+        courseworks = []
+        aslist = [self.id]
+        self.coursework = get_coursework(aslist)
+        for course in self.coursework[0]['courseWork']:
+            courseworks.append(course)
+        self.coursework = courseworks
+        return self.coursework
+   
 
     #this needs to be edited to return a dict or list of submissions tied to each course
     def get_submissions(self, coursework):
@@ -48,6 +58,8 @@ class Course:
 class CourseWork(Course):
     def __init__(self, class_name, courseWorkId):
         Course.__init__(self, class_name)
+        self.data = Course.get_coursework_data(self)
+        self.submissions = Course.get_submissions(self, self.data)
         self.courseId = Course.get_class_id(self)
         self.courseWorkId = courseWorkId
         self.l_submissions = []
@@ -128,6 +140,7 @@ class CourseWork(Course):
         for submission in self.submissions[0]['studentSubmissions']:
             l_submissions.append(Submission(self.class_name, submission['id']))
         self.l_submissions = l_submissions
+        return self.l_submissions
 
     def describe(self):
         print("Class Name: ", self.class_name)
@@ -218,8 +231,14 @@ def get_coursework(course_ids):
 
 def isolate_cw_ids(coursework):
     ids = []
-    for work in coursework[0]['courseWork']:
-        ids.append(work['id'])
+    try:
+        for work in coursework[0]['courseWork']:
+            print coursework
+            print coursework[0]
+            print coursework[0]['courseWork']
+            #ids.append(work['id'])
+    except:
+        pass
     return ids
 
 def get_submissions(course_ids, coursework_ids):
@@ -235,25 +254,22 @@ def get_submissions(course_ids, coursework_ids):
                 else: raise
 
 
+def getCourse(courseName):
+    n_course = Course(courseName)
+    #n_courseWork is a LIST of COURSEWORK
+    #n_courseWorkData is a LIST of DICTS
+    n_courseWorkData = n_course.get_coursework_data()
+    n_courseWork = n_course.get_coursework()
+    n_submissions = []
+    for  c in n_courseWork:
+        print type(c)
+        n_submissions.append(c.make_submissions())
+    return {'Course': n_course, 'CourseWork': n_courseWork, 'Submissions': n_submissions}    
 
 
-#the following will spit out a list of all submissions!
-#courses = get_courses()
-#ids = isolate_ids(courses)
-#coursework = get_coursework(ids)
-#cw_ids = isolate_cw_ids(coursework)
-#raw_submissions = get_submissions(ids, cw_ids)
-#submissions = raw_submissions[0]['studentSubmissions']
+getCourse('Code Nation Test')
 
-myCourse = Course('Code Nation Test')
 
-def describe(course):
-    courseworks = myCourse.get_coursework()
-    for coursework in courseworks:
-        print(coursework.class_name)
-        print(coursework.title)
-        print(coursework.description)
-        print(coursework.maxPoints)
+
         
        
-describe(myCourse) 
