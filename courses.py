@@ -170,16 +170,17 @@ class CourseWork(Course):
     def submissionGen(self):
         submissionObjs = []
         for submission in self.courseWork_submissions['studentSubmissions']:
-            print 'TESTING SUBMISSIONS'
-            print submission
-            print self.courseWork_submissions
             submissionObjs.append(Submission(self.name, self.courseWorkId, submission['id']))
         return submissionObjs
 
 class Submission(CourseWork):
     def __init__(self, name, courseWorkId, submissionId):
-        self.courseId = Course.get_courseId()
+        self.submissionId = submissionId
+        self.name = name
+        self.user_courses = get_user_courses()
+        self.courseId = Course.get_courseId(self)
         self.courseWorkId = courseWorkId
+        self.data = get_studentSubmission(self.courseId, self.courseWorkId, self.submissionId)
         self.courseWork_submissions = get_courseWork_submissions(self.courseId, self.courseWorkId)
         self.draftGrade =self.get_draftGrade()
         self.updateTime = self.get_updateTime()
@@ -189,38 +190,31 @@ class Submission(CourseWork):
         self.state = self.get_state()
         self.courseWorkType = self.get_courseWorkType()
         self.assignedGrade = self.get_assignedGrade()
-        self.maxPoints = self.get_maxPoints()    
-        self.submissionId = submissionId        
 
     def get_draftGrade(self):
-        return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['draftGrade']
+        return self.data['draftGrade']
        
-    def get_updateTime(self):
-        return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['updateTime']
+    def get_updatetime(self):
+        return self.data['updateTime']
 
     def get_alternateLink(self):
-        return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['alternateLink']
+        return self.data['alternateLink']
 
     def get_userId(self):
-        return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['userId']
+        return self.data['userId']
 
     def get_creationTime(self):
-        return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['creationTime']
+        return self.data['creationTime']
 
     def get_state(self):
-        return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['state']
-   
-    def get_courseWorkId(self):
-        return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['courseWorkId']
-   
+        return self.data['state']  
+ 
     def get_courseWorkType(self):
-        return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['courseWorkType']
-  
+        return self.data['courseWorkType']
+ 
     def get_assignedGrade(self):
-        return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['assignedGrade']
+        return self.data['assignedGrade']
 
-    def get_maxPoints(self):
-        return get_studentSubmission(self.classId, self.courseWorkId, self.id)[0]['studentSubmissions'][0]['submissionHistory'][2]['gradeHistory']['maxPoints']
 
 def get_user_courses():
     return service.courses().list().execute()['courses']
@@ -251,7 +245,10 @@ def getCourse(courseName):
     return {'Course': c, 'CourseWork':cw, 'Submissions':s}
 
 
-getCourse('Code Nation Test')
+query = raw_input("Enter class name: ")
+result = getCourse(query)
+print result['Course'].name
+print result['CourseWork'].title
 
 
 
