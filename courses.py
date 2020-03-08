@@ -5,12 +5,12 @@ import json
 import csv
 from pandas.io.json import json_normalize
 from googleapiclient.errors import HttpError
-
+from pprint import pprint
 
 CLIENT_SECRET_FILE = 'client_secret.json'
 API_SERVICE_NAME = 'classroom'
 API_VERSION = 'v1'
-SCOPES = ['https://www.googleapis.com/autih/classroom.coursework.students https://www.googleapis.com/auth/classroom.courses']
+SCOPES = ['https://www.googleapis.com/auth/classroom.coursework.students https://www.googleapis.com/auth/classroom.courses']
 
 service = Create_Service(CLIENT_SECRET_FILE, API_SERVICE_NAME, API_VERSION, SCOPES)
 
@@ -32,7 +32,20 @@ class Course:
         self.ownerId = self.get_ownerId()
         self.calendarId = self.get_calendarId()
         self.teacherFolder = self.get_teacherFolder()
+    
+    def __getitem__(self, key):
+        return getattr(self, key)
+   
+    def list_attr(self):
+        attr = self.__dict__.keys()
+        for a in attr:
+            print(a)
 
+    def list_all(self):
+        attr = self.__dict__
+        pprint(attr)
+        
+    
     def get_courseId(self):
         for course in self.user_courses:
             if(json.dumps(course).find(self.name)!= -1):
@@ -109,7 +122,21 @@ class CourseWork(Course):
         self.workType = self.get_workType()
         self.alternateLink = self.get_alternateLink()
         self.materials = self.get_materials()
-        
+    
+    def __getitem__(self, key):
+        return getattr(self, key)
+   
+    def list_attr(self):
+        attr = self.__dict__.keys()
+        for a in attr:
+            print(a)
+
+    def list_all(self):
+        attr = self.__dict__
+        pprint(attr)
+    
+
+    
     def get_updateTime(self):
         return get_courseWork(self.courseId, self.courseWorkId)['updateTime'] 
 
@@ -190,6 +217,20 @@ class Submission(CourseWork):
         self.state = self.get_state()
         self.courseWorkType = self.get_courseWorkType()
         self.assignedGrade = self.get_assignedGrade()
+    
+    def __getitem__(self, key):
+        return getattr(self, key)
+   
+    def list_attr(self):
+        attr = self.__dict__.keys()
+        for a in attr:
+            print(a)
+
+    def list_all(self):
+        attr = self.__dict__
+        pprint(attr)
+    
+
 
     def get_draftGrade(self):
         return self.data['draftGrade']
@@ -243,14 +284,3 @@ def getCourse(courseName):
     for w in cw:
         s.append(w.submissionGen())
     return {'Course': c, 'CourseWork':cw, 'Submissions':s}
-
-
-query = raw_input("Enter class name: ")
-result = getCourse(query)
-print result['Course'].name
-print result['CourseWork'].title
-
-
-
-        
-       
