@@ -1,13 +1,21 @@
 from gAPI import Create_Service
 import course_util as cutil
 
-CLIENT_SECRET_FILE = 'client_secret.json'
-API_SERVICE_NAME = 'classroom'
-API_VERSION = 'v1'
-SCOPES = ['https://www.googleapis.com/auth/classroom.coursework.students https://www.googleapis.com/auth/classroom.courses']
 
-service = Create_Service(CLIENT_SECRET_FILE, API_SERVICE_NAME, API_VERSION, SCOPES)
+u_courses = cutil.get_user_courses()
 
-course = cutil.getCourse("Code Nation Test")
+t_courses = []
+for course in u_courses:
+       t_courses.append(cutil.getCourse(course["name"]))
 
-print(course["Course"].list_attr())
+
+for i in range(len(t_courses)):
+    print t_courses[i]['Course'].name
+
+
+
+
+
+
+
+

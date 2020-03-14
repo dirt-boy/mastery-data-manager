@@ -97,7 +97,10 @@ class Course:
     def courseWorkGen(self):
         courseWorkObjs = []
         for course in self.courseWork['courseWork']:
-            courseWorkObjs.append(CourseWork(self.name, course['id']))
+            try:
+                courseWorkObjs.append(CourseWork(self.name, course['id']))
+            except:
+                pass
         return courseWorkObjs
 
 class CourseWork(Course):
@@ -197,7 +200,8 @@ class CourseWork(Course):
     def submissionGen(self):
         submissionObjs = []
         for submission in self.courseWork_submissions['studentSubmissions']:
-            submissionObjs.append(Submission(self.name, self.courseWorkId, submission['id']))
+            if('studentSubmissions' in self.courseWork_submissions.keys()):
+                submissionObjs.append(Submission(self.name, self.courseWorkId, submission['id']))
         return submissionObjs
 
 class Submission(CourseWork):
