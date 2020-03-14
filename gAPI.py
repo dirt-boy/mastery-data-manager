@@ -15,8 +15,6 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes):
     API_VERSION = api_version
     SCOPES = [scope for scope in scopes[0]]
     os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
-    print(SCOPES)
-
     cred = None
 
     if os.path.exists('token.pickle'):
