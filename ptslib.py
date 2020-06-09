@@ -1,8 +1,11 @@
 import requests
 //import login-lib.py
 
-def get_url():
-    //depends on rubric.list vs courseworkquery    
+def get_url(type):
+    if(type== "list"):
+        url= "https://classroom.google.com/u/1/v7/rubric/list?_reqid=1163629&rt=j"
+    if(type=="submission"):
+        url="https://classroom.google.com/u/1/v7/querysubmission?_reqid=1482657&rt=j"
     return url
 
 def get_headers():
