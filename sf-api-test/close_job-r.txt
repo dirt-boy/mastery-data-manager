@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="UTF-8"?><error
+   xmlns="http://www.force.com/2009/06/asyncapi/dataload">
+ <exceptionCode>InvalidJobState</exceptionCode>
+ <exceptionMessage>Failed to create batch, since the Job is not Open. Current job state is 'Closed'</exceptionMessage>
+</error>
