@@ -8,6 +8,9 @@ def get_url(type):
         url="https://classroom.google.com/u/1/v7/querysubmission?_reqid=1482657&rt=j"
     return url
 
+def get_token(token):
+    return token
+
 def get_headers():
     //pipe from gapis oauth2 lib 
     return headers
