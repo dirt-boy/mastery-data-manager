@@ -3,45 +3,56 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import time
-import pickle
+import json
+from collections import ChainMap
+import requests
 
 def save_cookies():
-    email = "gabriel.v.gagnon@gmail.com"
+    email = "classroom.admin@codenation.org"
     password = "e4a4eefee975"
-
+    url = "https://classroom.google.com/u/0/c/MTE0NTcxNDk1Mzgz/a/MTE0NTcxNDk1Mzkx/details"
     driver = webdriver.Chrome()
-    driver.get("https://accounts.google.com/signin")
+    driver.get(url)
     email_phone = driver.find_element_by_xpath("//input[@id='identifierId']")
     email_phone.send_keys(email)
     driver.find_element_by_id("identifierNext").click()
     WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='password']")))
-    password = driver.find_element_by_xpath("//input[@name='password']")
-    password.send_keys(password)
+    pwd = driver.find_element_by_xpath("//input[@name='password']")
+    pwd.send_keys(password)
     driver.find_element_by_id("passwordNext").click()
     time.sleep(5)
 
-    cookies = driver.get_cookies()    
+    g_cookies = driver.get_cookies()
+    
+    names = []
+    values = []
+    
 
-    pickle.dump(cookies, open("cookies.pkl")) 
+    for cookie in g_cookies:
+        names.append(cookie['name'])
+        values.append(cookie['value'])
+    
+    cookies = dict(zip(names, values))
 
     return cookies
 
 
-import requests
+def set_params(url, cookies, headers, files, cookies):
+cookies = save_cookies()
+url = "https://classroom.google.com/u/1/v7/rubric/list?_reqid=684545&rt=j"
+payload = {'f.req': '[[null,[["52609649719","102616360750"]]]]',
+'token': 'ABFGqemQrjMFXA3O5fs39DRRATi_wxbNow:1591663228646'}
+files = []
+headers = {
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36',
+  'Authorization': 'Bearer ya29.a0AfH6SMCgCyleO0o2MS0Gu8rryJyYYkT-PKKmPENFPYWTgjL6cjrlOzhG_ebyH5rmiQACLPIgyz59sxqdvGqhe77vAXEQIc96ucK295-2TiDD6XV2DAE22b4NsEp9dsw7BP4QIE5MwhSaPi6cdoogfGzXPcUG5My1OV8'}
 
-with requests.Session() as s:
-    with open("cookies.pkl","rb") as fd:
-        cookies = pickle.load(fd)
-	for cookie in cookies:
-	    # You should let a driver manage setting and unsetting the cookie
-	    driver.add_cookie(cookie)
-    headers = {
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/70.0.3538.110 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8",
-        "Referer": "https://www.google.com/",
-        "Accept-Encoding": "deflate",
-        "Accept-Language": "en;q=0.6",
-        }
+set_params("https://classroom.google.com/u/1/v7/rubric/list?_reqid=684545rt=j",['f.req': '[[null, [["52609649719". "102616360750"]]]]', 'token':'ABFGgemQrjMFXA305Fs39DRRATi_wxbNow:1591663228646'}, files=[], headers= {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML,     like Gecko) Chrome/83.0.4103.97 Safari/537.36',
+ 48   'Authorization': 'Bearer ya29.a0AfH6SMCgCyleO0o2MS0Gu8rryJyYYkT-                              PKKmPENFPYWTgjL6cjrlOzhG_ebyH5rmiQACLPIgyz59sxqdvGqhe77vAXEQIc96ucK295-                2TiDD6XV2DAE22b4NsEp9dsw7BP4QIE5MwhSaPi6cdoogfGzXPcUG5My1OV8'}
 
-    resp = s.get("https://myaccount.google.com/",headers=headers,cookies=cookies)
-    print(resp.url)
+def try-post():
+    response = requests.request("POST", url, headers=headers, data = payload, files = files, cookies=cookies)
+    print('cookies sent:', cookies)
+    print('headers sent:', headers)
+    print('payload sent:', payload)
+    print(response.text)
