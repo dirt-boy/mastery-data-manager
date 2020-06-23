@@ -1,27 +1,18 @@
 import requests
-//import login-lib.py
-
-def get_url(type):
-    if(type== "list"):
-        url= "https://classroom.google.com/u/1/v7/rubric/list?_reqid=1163629&rt=j"
-    if(type=="submission"):
-        url="https://classroom.google.com/u/1/v7/querysubmission?_reqid=1482657&rt=j"
-    return url
-
-def get_token(token):
-    return token
-
-def get_headers():
-    //pipe from gapis oauth2 lib 
-    return headers
-
-def get_payload():
-    //pipe from gapis oauth2 lib
-    return payload
+from page_util import get_login
+from page_util import get_page
 
 
-def by-courseWorkId(courseId, courseWorkId):
-    response = requests.request("POST", url, headers=headers, data=payload)
-    return response
+def save_page():
+    print("Enter URI:\n")
+    url=input()
+    creds = get_login()
+    get_page(*creds, url)
+
+save_page()
+
+
+
+
     
 
