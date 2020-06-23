@@ -25,4 +25,24 @@ I figure that by documenting this thought process I may at least be able to pick
 
 Ok. Thanks. Bye.
 
--dirt-boy, 2020.6.221
+-dirt-boy, 2020.6.21
+
+UPDATE 2020.6.22
+
+I have abandoned hope of completing a proper Python Requests implementation for pulling rubric datya. 
+
+Time is of the essence.
+
+I have instead switched to saving full copies of the html of a rubric page, which can then be used to harvest the rubric data (as far as I have explored -- which is likely farther than most who don't regularly work on Google Classroom -- html class tags for elements are consistent throughout different rubrics. I have yet to experiment with class tags across classrooms or users, but I will have to wait until I have access to additional test data to look into this.
+
+As such, I will be focusing on constructing JSON objects out of the raw page html. In hindsight, this may actually imply less effort and data formatting than the precious Requests library method.
+
+We shall see. 
+
+For the time being this will be my course of action.
+
+As the goal of this project is to have a minimum viable product completed by the end of June 2020, I will save tinkering with http requests for the polishing phase.
+
+Thanks for rading these logs.
+
+-dirt-boy, 2020.6.22
