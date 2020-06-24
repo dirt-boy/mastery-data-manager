@@ -2,23 +2,29 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+import os.path
+from os import path
 import time
-import json
-from collections import ChainMap
 import requests
-import getpass
+import get_login as creds
+import pickle
+
+
 
 def make_name(url):
     name=url[url.rfind('/', 0, url.rfind('/'))+1:url.rfind('/')]
     return name
     
 def get_login():
-    print("Enter Classroom Admin Email:")
-    email=input()
-    print('\n')
-    print("Enter Classroom Admin Password:")
-    pwd = getpass.getpass(prompt="Password:")
-    return [email, pwd]
+    if path.exists('creds.pickle'):
+        login_info=pickle.load( open('creds.pickle', 'rb'))
+        return login_info
+    else:
+        credentials = creds.write_creds()
+        print(credentials)
+        login_info = pickle.load( open(credentials, 'wb'))
+        return login_info
+
 
 def get_page(email, password, url):
     email = email
@@ -42,8 +48,9 @@ def get_page(email, password, url):
     html = driver.page_source
 
     with open(name+'.html', 'w') as o:
-       file=o.write(html)
-    return file
+        o.write(html)
+    print(str(type(o))+": \n"+str(o))
+    return o
     
     #g_cookies=driver.get_cookies()
 
