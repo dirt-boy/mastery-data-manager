@@ -46,3 +46,16 @@ As the goal of this project is to have a minimum viable product completed by the
 Thanks for rading these logs.
 
 -dirt-boy, 2020.6.22
+
+UPDATE 2020.6.23
+
+rubric_reader.py now allows the application to write a single slice of html content to a new file -- in essence this is isolating just the rubric data for us to parse. The next step, I believe, is constructing a functional dictionary of html class tags that indicate different parts of each rubric. This may require some discussion with Michael and Alyxe to ensure that rubrics will not extend beyond a certain number of gradeable items, i.e. i do not have to prepare a dictionary that is flexible enough to accomodate an infinite number of entries.
+
+My hope is that this will take a minimal amount time, and I will be able to move onto appending the rubric data to the final product produced and logges by course_util.
+
+Thanks for coming to my ted talk.
+bye
+
+-dirt-boy 2020.6.23
+
+
