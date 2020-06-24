@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+	<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns="urn:enterprise.soap.sforce.com" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<soapenv:Body>
+			<loginResponse>
+				<result>
+					<metadataServerUrl>https://codenation.my.salesforce.com/services/Soap/m/48.0/00D61000000Hqf4</metadataServerUrl>
+					<passwordExpired>false</passwordExpired>
+					<sandbox>false</sandbox>
+					<serverUrl>https://codenation.my.salesforce.com/services/Soap/c/48.0/00D61000000Hqf4</serverUrl><sessionId>00D61000000Hqf4!AQsAQMPyF8LCk7XPYLU0rNAHW1eCZ6wIDPwpiqI5SWrhQA31JqBik2pIodlbxtJANMfJa1MNue5JtHiKKGwoVxkVYyO38for</sessionId>
+					<userId>00561000001ysAaAAI</userId>
+					<userInfo>
+						<accessibilityMode>false</accessibilityMode>
+						<chatterExternal>false</chatterExternal>
+						<currencySymbol>$</currencySymbol>
+						<orgAttachmentFileSizeLimit>5242880</orgAttachmentFileSizeLimit>
+						<orgDefaultCurrencyIsoCode>USD</orgDefaultCurrencyIsoCode>
+						<orgDefaultCurrencyLocale>en_US</orgDefaultCurrencyLocale>
+						<orgDisallowHtmlAttachments>false</orgDisallowHtmlAttachments>
+						<orgHasPersonAccounts>false</orgHasPersonAccounts>
+						<organizationId>00D61000000Hqf4EAC</organizationId>
+						<organizationMultiCurrency>false</organizationMultiCurrency>
+						<organizationName>Code Nation</organizationName>
+						<profileId>00e61000000W7U5AAK</profileId>
+						<roleId>00E4N000000euF1UAI</roleId>
+						<sessionSecondsValid>14400</sessionSecondsValid>
+						<userDefaultCurrencyIsoCode xsi:nil="true"/>
+						<userEmail>alyxe.lett@codenation.org</userEmail>
+						<userFullName>Alyxe Lett</userFullName>
+						<userId>00561000001ysAaAAI</userId>
+						<userLanguage>en_US</userLanguage>
+						<userLocale>en_US</userLocale>
+						<userName>alyxe.lett@codenation.org</userName>
+						<userTimeZone>America/Tijuana</userTimeZone>
+						<userType>Standard</userType>
+						<userUiSkin>Theme3</userUiSkin>
+					</userInfo>
+				</result>
+			</loginResponse>
+		</soapenv:Body>
+	</soapenv:Envelope>
