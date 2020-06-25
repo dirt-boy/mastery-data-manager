@@ -14,14 +14,19 @@ import pickle
 def make_name(url):
     name=url[url.rfind('/', 0, url.rfind('/'))+1:url.rfind('/')]
     return name
-    
+
+
+def get_url(url):
+    url = input('Enter desired URL: ')
+    return url
+
+
 def get_login():
     if path.exists('creds.pickle'):
         login_info=pickle.load( open('creds.pickle', 'rb'))
         return login_info
     else:
         credentials = creds.write_creds()
-        print(credentials)
         login_info = pickle.load( open(credentials, 'wb'))
         return login_info
 
@@ -29,7 +34,7 @@ def get_login():
 def get_page(email, password, url):
     email = email
     password = password
-    url = url
+    url = get_url(url)
     name = make_name(url)
     print(name)
     driver = webdriver.Chrome()
