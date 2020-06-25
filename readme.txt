@@ -58,4 +58,7 @@ bye
 
 -dirt-boy 2020.6.23
 
+UPDATE 2020.6.24
+
+Just did a ton of cleanup! hope this keeps things nice and secure. Also many important gains were made today in the realm of rubric-reading. I am very excited to continue this work tomorroy
 
