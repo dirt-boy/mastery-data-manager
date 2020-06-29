@@ -43,17 +43,16 @@ def course_dict():
         c['courseWork'].append(course_coursework(c['id']))
 
         for j,cw in enumerate(course_dict[i]['courseWork']):
-            
-            cw['studentSubmissions'] = []
-            cw['studentSubmissions'].append(coursework_submissions(c['courseWork'][i], cw['id']))
 
-    print(course_dict)
+            cw['studentSubmissions'] = []
+            cw['studentSubmissions'].append(coursework_submissions(c['courseWork'][i], cw['courseWork'][j]['id']))
+
     return course_dict
 
 
 
 def write_file(course_dict):
-    name = str('courses')+'.json' 
+    name = str('courses')+'.json'
     with open(name, 'w') as coursefile:
         coursefile.write(json.dumps(course_dict))
     return coursefile
