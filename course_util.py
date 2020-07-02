@@ -5,12 +5,12 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import BatchHttpRequest
 import page_util as pg
 import json
-import logging
+import sys
+sys.path.insert(1, 'logging-test')
+import makelogger as logger
 
-logger = logging.getLogger(__name__)
-logger.setLevel('INFO')
 
-
+GCLOGGER = logger.get_logger(__name__)
 
 CLIENT_SECRET_FILE = 'client_secret.json'
 API_SERVICE_NAME = 'classroom'
@@ -20,95 +20,73 @@ SCOPES = ['https://www.googleapis.com/auth/classroom.coursework.students https:/
 classroom = Create_Service(CLIENT_SECRET_FILE, API_SERVICE_NAME, API_VERSION, SCOPES)
 
 
-def callback(request_id, response, exception):
+def callback_c(request_id, response, exception):
     if exception is not None:
-        print('Error accessing object data for request: '+ str(request_id))
-        
+        GCLOGGER.info(exception)
+        pass
     else:
-        print('Data accessed succesfully.')
-        logger.info(response)
-        return response
+        GCLOGGER.info(response)
+        itercourses(response)
+        pass
 
-batch_cw = classroom.new_batch_http_request(callback=callback)
-batch_s = classroom.new_batch_http_request(callback=callback)
+def callback_cw(request_id, response, exception):
+    if exception is not None:
+        GCLOGGER.info(exception)
+        pass
+    else:
+        GCLOGGER.info(response)
+        itercourseworks(response)
+        pass
+
+def callback_s(request_id, response, exception):
+    if exception is not None:
+        GCLOGGER.info(exception)
+        pass
+    else:
+        GCLOGGER.info(response)
+        pass
+
+
+
+
+
+batch_c = classroom.new_batch_http_request(callback=callback_c)
+batch_cw = classroom.new_batch_http_request(callback=callback_cw)
+batch_s = classroom.new_batch_http_request(callback=callback_s)
 
 def user_courses():
-
-    courses = classroom.courses().list(fields='courses/name,courses/id').execute() 
-    return courses
+    batch_c.add(classroom.courses().list(fields='courses/name,courses/id')) 
 
 
 def course_coursework(courseId):
-    return batch_cw.add(classroom.courses().courseWork().list(courseId=courseId, fields='courseWork/id,courseWork/title,courseWork/maxPoints,courseWork/description,courseWork/creationTime,courseWork/alternateLink'), request_id=courseId)
+    batch_cw.add(classroom.courses().courseWork().list(courseId=courseId, fields='courseWork/id,courseWork/title,courseWork/maxPoints,courseWork/description,courseWork/creationTime,courseWork/alternateLink,courseWork/courseId'))
     
 
-def coursework_submissions(courseId, courseworkId, i):
-    req_id = str(courseworkId)+str(i)
-    return batch_s.add(classroom.courses().courseWork().studentSubmissions().list(courseId=courseId, courseWorkId=courseworkId, fields='studentSubmissions/id, studentSubmissions/assignmentSubmission/userId,studentSubmissions/assignedGrade,studentSubmissions/alternateLink'),request_id=req_id)
+def coursework_submissions(courseId, courseworkId):
+    batch_s.add(classroom.courses().courseWork().studentSubmissions().list(courseId=courseId, courseWorkId=courseworkId, fields='studentSubmissions/id,studentSubmissions/assignedGrade,studentSubmissions/alternateLink,studentSubmissions/courseWorkId,studentSubmissions/courseId,studentSubmissions/userId'))
 
 
-def student_roster(courseId):
-    students = classroom.list(courseId)
-    return students
+def itercourses(resp):
+    for i, c in enumerate(resp['courses']):
+        course_coursework(c['id'])
 
-def teacher_roster(courseId):
-    teachers = classroom.list(courseId)
-    return teachers
-
-def course_dict():
-    course_dict = user_courses()
-    print('pre batch-execute')
-    batch_cw.execute()
-    print('post batch-execute')
-
-    coursework = get_coursework(course_dict)
-    
-    for i,c in enumerate(coursework['courses']):
-
-        print('entered first loop...')
-
-        course_dict['courses'][i]['courseWork'] = []
-        course_dict['courses'][i]['courseWork'].append(c['courseWork'])
-        
-        print('pre get_submissions...')
-        
-        get_submissions(course_dict, i, c['id'])
-
-        print('post get_submissions...')
-        submissions = batch_s.execute()
-        print('post batch execute...')
-        for j,cw in enumerate(course_dict['courses'][i]['courseWork']):
-            
-
-            course_dict['courses'][i]['courseWork'][j]['studentSubmissions'] = []
-            
-            course_dict['courses'][i]['courseWork'][j]['studentSubmissions'].append(cw)
-    return course_dict
-            
-
-def get_coursework(course_dict):
-    for i,c in enumerate(course_dict['courses']):
-        course_dict['courses'][i] = course_coursework(c['id'])
-        return course_dict
-
-def get_submissions(course_dict, i, cwid):
-    for i,cw in enumerate(course_dict['courses']):
-        return coursework_submissions(cw['id'], cwid, i)
+def itercourseworks(resp):
+    for i, cw in enumerate(resp['courseWork']):
+        coursework_submissions(cw['courseId'], cw['id'])
 
 
-def execute_batch():
-
-    response = batch.execute(http=http)
-    print(response)
-
-def write_file(course_dict):
-    name = str('courses')+'.json'
-    with open(name, 'w') as coursefile:
-        coursefile.write(str(course_dict))
-    return coursefile
 
 
-write_file(course_dict())
+
+user_courses()
+
+batch_c.execute()
+batch_cw.execute()
+batch_s.execute()
+
+
+
+
 
 
 
