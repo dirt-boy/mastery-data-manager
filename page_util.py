@@ -44,7 +44,6 @@ def get_page(email, password):
     password = password
     url = get_url()
     name = make_name(url)
-    print(name)
     driver.get(url)
     email_phone = driver.find_element_by_xpath("//input[@id='Email']")
     email_phone.send_keys(email)
@@ -59,11 +58,11 @@ def get_page(email, password):
     
     prt_scr('final')
     html = driver.page_source
-
-    with open(name+'.html', 'w') as o:
-        o.write(html)
-    print(str(type(o))+": \n"+str(o))
-    return o
+    return html
+    #with open(name+'.html', 'w') as o:
+        #o.write(html)
+    #print(str(type(o))+": \n"+str(o))
+    #return o
 
 def prt_scr(name):
     img =driver.save_screenshot(name+'.png')
@@ -73,10 +72,6 @@ def get_src(name):
     with open(name+'.html', 'w') as o:
         o.write(html)
 
-#FOR TESTING PURPOSES#
-creds = get_login()
-get_page(*creds)
-#END TEST#
 
     
 
