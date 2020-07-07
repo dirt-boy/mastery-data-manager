@@ -26,7 +26,5 @@ def write_file(file, opentag, closetag):
     with open(file.name[:-5]+'-rubric-data.html', 'x') as rubric_data:
         rubric_data.write(text)
 
-file = page_util.get_page(*page_util.get_login(), 'https://classroom.google.com/u/3/c/MTE0NTcxNDk1Mzgz/a/MTE0NTcxNDk1Mzkx/details')
 
-write_file(file, '<div class="ZoO8hd uXlBQc">', '<div role="presentation" class="jlfrG C4yF5e R5iLrf bJuVn ">')
     

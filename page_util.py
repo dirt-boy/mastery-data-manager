@@ -8,7 +8,13 @@ import time
 import requests
 import get_login as creds
 import pickle
+import sys
+sys.path.append('headless-chrome/')
+sys.path.append('headless-chrome/chromedriver')
+import noviz
 
+driver = noviz.get_driver()
+driver.implicitly_wait(10)
 
 
 def make_name(url):
@@ -16,7 +22,7 @@ def make_name(url):
     return name
 
 
-def get_url(url):
+def get_url():
     url = input('Enter desired URL: ')
     return url
 
@@ -24,98 +30,55 @@ def get_url(url):
 def get_login():
     if path.exists('creds.pickle'):
         login_info=pickle.load( open('creds.pickle', 'rb'))
+        print(login_info)
         return login_info
     else:
         credentials = creds.write_creds()
         login_info = pickle.load( open(credentials, 'wb'))
+        print(login_info)
         return login_info
 
 
-def get_page(email, password, url):
+def get_page(email, password):
     email = email
     password = password
-    url = get_url(url)
+    url = get_url()
     name = make_name(url)
     print(name)
-    driver = webdriver.Chrome()
     driver.get(url)
-    email_phone = driver.find_element_by_xpath("//input[@id='identifierId']")
+    email_phone = driver.find_element_by_xpath("//input[@id='Email']")
     email_phone.send_keys(email)
-    driver.find_element_by_id("identifierNext").click()
-    WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//input[@name='password']")))
-    pwd = driver.find_element_by_xpath("//input[@name='password']")
+    driver.find_element_by_id("next").click()
+    WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='password']")))
+    pwd = driver.find_element_by_xpath("//input[@id='password']")
     pwd.send_keys(password)
-    driver.find_element_by_id("passwordNext").click()
+    driver.find_element_by_id("submit").click()
     WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".rag0")))
     driver.find_element_by_css_selector(".rag0").click()
     time.sleep(5)
-
+    
+    prt_scr('final')
     html = driver.page_source
 
     with open(name+'.html', 'w') as o:
         o.write(html)
     print(str(type(o))+": \n"+str(o))
     return o
-    
-    #g_cookies=driver.get_cookies()
 
+def prt_scr(name):
+    img =driver.save_screenshot(name+'.png')
 
-    """
-    g_cookies=[]
-    g_cookies.append(driver.get_cookie('SID'))
-    g_cookies.append(driver.get_cookie('__Secure-3PSID'))
-    """
-
-    """
-    cookies={}
-    for cookie in g_cookies:
-        cookies
-    """
-    #return g_cookies
-
-"""
-def set_params(url, data, headers,files, cookies):
-    url = url
-    files = files
-    headers = headers
-    return [url, data, headers,files, cookies]
-
-params = set_params("https://classroom.google.com/u/1/v7/rubric/list?_reqid=684545&rt=j",
-        {'f.req': '[[null,[["52609649719","102616360750"]]]]',
-'token': 'ABFGqemQrjMFXA3O5fs39DRRATi_wxbNow:1591663228646'}, 
-        {'X-Same-Domain': '1','User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.97 Safari/537.36','Content-Type':'application/x-www-form-urlencoded;charset=UTF-8','Accept':'*/*','Authorization': 'Bearer ya29.a0AfH6SMCgCyleO0o2MS0Gu8rryJyYYkT-PKKmPENFPYWTgjL6cjrlOzhG_ebyH5rmiQACLPIgyz59sxqdvGqhe77vAXEQIc96ucK295-2TiDD6XV2DAE22b4NsEp9dsw7BP4QIE5MwhSaPi6cdoogfGzXPcUG5My1OV8'}, [], save_cookies())
-
-def sel_post(url, payload={}, headers={}, files=[], cookies=[]):
-    s = requests.Session()
-    for cookie in cookies:
-        s.cookies.set(cookie['name'], cookie['value'])
-    s.headers = headers
-    response = s.post(url, data=payload, files=files)
-    request_obj = response.request
-    print('\n')
-    print('HEADERS:\n', request_obj.headers, '\n')
-    print('BODY:\n', request_obj.body, '\n')
-    #print(request_obj.method)
-    #print(request_obj.url)
-    print('RESPONSE:\n', response.text,'\n')
-
-
-def pprint_POST(req):
-    print('{}\n{}\r\n{}\r\n\r\n{}'.format(
-        '-----------START-----------',
-        req.method + ' ' + req.url,
-        '\r\n'.join('{}: {}'.format(k, v) for k, v in req.headers.items()),
-        req.body,
-    ))
-
-def dl_page():
-    html = driver.page_source()
-    with open('output.html', 'w') as o:
+def get_src(name):
+    html = driver.page_source
+    with open(name+'.html', 'w') as o:
         o.write(html)
 
+#FOR TESTING PURPOSES#
+creds = get_login()
+get_page(*creds)
+#END TEST#
 
+    
 
-#pprint_POST(sel_post(*params))
+    
 
-#sel_post(*params)
-"""

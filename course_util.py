@@ -8,7 +8,8 @@ import json
 import sys
 sys.path.insert(1, 'logging-test')
 import makelogger as logger
-
+import httplib2
+httplib2.debuglevel = 4
 
 GCLOGGER = logger.get_logger(__name__)
 
