@@ -21,11 +21,11 @@ def make_name(url):
     name=url[url.rfind('/', 0, url.rfind('/'))+1:url.rfind('/')]
     return name
 
-
+"""
 def get_url():
     url = input('Enter desired URL: ')
     return url
-
+"""
 
 def get_login():
     if path.exists('creds.pickle'):
@@ -39,10 +39,10 @@ def get_login():
         return login_info
 
 
-def get_page(email, password):
+def get_page(email, password, url):
     email = email
     password = password
-    url = get_url()
+    url = url
     name = make_name(url)
     driver.get(url)
     email_phone = driver.find_element_by_xpath("//input[@id='Email']")
@@ -52,8 +52,11 @@ def get_page(email, password):
     pwd = driver.find_element_by_xpath("//input[@id='password']")
     pwd.send_keys(password)
     driver.find_element_by_id("submit").click()
-    WebDriverWait(driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, ".rag0")))
-    driver.find_element_by_css_selector(".rag0").click()
+    try:
+        driver.find_element_by_css_selector(".rag0").click()
+        pass
+    except:
+        return None
     time.sleep(5)
     
     prt_scr('final')

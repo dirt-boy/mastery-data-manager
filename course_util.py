@@ -9,9 +9,11 @@ import sys
 sys.path.insert(1, 'logging-test')
 import makelogger as logger
 import httplib2
-httplib2.debuglevel = 4
+import extract_data as RUBRIC
 
 GCLOGGER = logger.get_logger(__name__)
+REGEX_KEYS = RUBRIC.regex_gen()
+
 
 CLIENT_SECRET_FILE = 'client_secret.json'
 API_SERVICE_NAME = 'classroom'
@@ -74,6 +76,7 @@ def itercourses(resp):
 def itercourseworks(resp):
     for i, cw in enumerate(resp['courseWork']):
         coursework_submissions(cw['courseId'], cw['id'])
+        RUBRIC.rubric(REGEX_KEYS, cw['alternateLink'])        
 
 
 
