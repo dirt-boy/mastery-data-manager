@@ -23,27 +23,22 @@ def rubric(regex_keys):
     descriptions = re.findall(regex_keys[2][1], raw)
     level_titles = re.findall(regex_keys[3][1], raw)
     point_values = re.findall(regex_keys[4][1], raw)
+    
+    criteria = list(dict.fromkeys(criteria))
+    
+    rubric = {}
 
-    dict['title'] = title
-    for i, c in enumerate(criteria):
-        dict['criteria'+str(i)] = [{}]
-        dict['criteria'+str(i)] = c
-        print(dict)
-    for i, d in enumerate(descriptions):
-        dict['criteria'+str(i)]['description'] = d
-        for j, lt in enumerate(level_titles):
-            dict['criteria'+str(i)][i]['content']['levels'] = [{}]
-            dict['criteria'+str(i)][i]['content']['levels'][j]['level title'] = lt
-        for j, p in enumerate(point_values):
-            dict['criteria'+str(i)][i]['content']['levels'][j]['point value'] = p
-
-    print(dict)
-    return dict
-
+    rubric['title'] = title[0]
+    rubric['criteria'] = []
+    for i in range(0, len(criteria)):
+        rubric['criteria'].append({'criterion'+str(i): criteria[i], 'content': []})
+        for j in range(((i+1)*3)-3, (i+1)*3):
+            rubric['criteria'][i]['content'].append({'description': descriptions[j], 'level title': level_titles[j], 'point value': point_values[j]})
+    return rubric
     
 
-    
 
-rubric(regex_gen())
+
+
 
 
