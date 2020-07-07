@@ -44,28 +44,24 @@ def get_page(email, password, url):
     password = password
     url = url
     name = make_name(url)
-    driver.get(url)
-    email_phone = driver.find_element_by_xpath("//input[@id='Email']")
-    email_phone.send_keys(email)
-    driver.find_element_by_id("next").click()
-    WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='password']")))
-    pwd = driver.find_element_by_xpath("//input[@id='password']")
-    pwd.send_keys(password)
-    driver.find_element_by_id("submit").click()
     try:
+        
+        driver.get(url)
+        email_phone = driver.find_element_by_xpath("//input[@id='Email']")
+        email_phone.send_keys(email)
+        driver.find_element_by_id("next").click()
+        WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='password']")))
+        pwd = driver.find_element_by_xpath("//input[@id='password']")
+        pwd.send_keys(password)
+        driver.find_element_by_id("submit").click()
         driver.find_element_by_css_selector(".rag0").click()
         pass
     except:
         return None
     time.sleep(5)
     
-    prt_scr('final')
     html = driver.page_source
     return html
-    #with open(name+'.html', 'w') as o:
-        #o.write(html)
-    #print(str(type(o))+": \n"+str(o))
-    #return o
 
 def prt_scr(name):
     img =driver.save_screenshot(name+'.png')

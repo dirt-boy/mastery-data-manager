@@ -1,6 +1,8 @@
 import page_util as page
 import rubric_dict as keys
 import re
+import sys
+sys.path.insert(1, 'logging-test')
 import makelogger as logger
 
 GCLOGGER = logger.get_logger(__name__)
