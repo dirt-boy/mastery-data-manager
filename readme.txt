@@ -62,3 +62,19 @@ UPDATE 2020.6.24
 
 Just did a ton of cleanup! hope this keeps things nice and secure. Also many important gains were made today in the realm of rubric-reading. I am very excited to continue this work tomorroy
 
+
+UPDATE 2020.7.07
+
+ok so it works with headless chrome now which is nice. Its also capable of using regex to locate rubric data. Also nice. Unfortunately I am having difficulty packing the read rubric data into a log-worthy format. putting it into a python dict seems to be more trouble than it's worth. I am wondering if it would make more sense to simply... construct it in a more manual fashion. by which I mean iterating on the length of each regex list result and just adding in each piece within each for loop. Now that im writing it down that does seem like the simplest solution possible. I'll probably try that later. 
+
+Currently I am trying to make things more modular by allowing the script to identify the dictionary of rubric keys (mutable), and then iterate through them to populate a dictionary. It doesn't sound too complicated but it turns out that, unfortunately, the raw html of each rubric contains duplicates of some of the keys. i.e. each criteria appears twice. like literally twice. 
+
+For modularity purposes it would make sense to create a simple python dict out of these, avoiding any kind of number-specific iterables for deletion of repeats -- in the end, we really only need one of each key-value pair. Yeah. that makes sense. 
+
+I think it makes sense to begin by drawing out a simple hierarchy of the dictionary structure I want. Like physically drawn. Typing it up appears to not work for me for some reason. But anyhoo. I will be trying to simplify this tomorrow morning so that I can complete the rubric pulling process. 
+
+I fvcking hate these goddamn rubrics. difficult difficult lemon difficult.
+
+ok bye.
+
+-dirt-boy 2020.7.07
