@@ -1,0 +1,17 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cn-mastery-data-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      cn-mdm: web
+  template:
+    metadata:
+      labels:
+        cn-mdm: web
+    spec:
+      containers:
+      - name: cn-mastery-data-manager
+        image: dirtboy/cn-mastery-data-manager:mdm-prod
