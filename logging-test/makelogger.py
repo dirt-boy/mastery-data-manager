@@ -5,7 +5,7 @@ FORMATTER = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 LOG_FILE = "my_app.log"
 
 def get_console_handler():
-    console_handler = logging.StreamHandler(sys.stdout)
+    console_handler = logging.handlers.SysLogHandler(address = '/dev/log')
     console_handler.setFormatter(FORMATTER)
     return console_handler
 
@@ -23,10 +23,10 @@ def get_logger(logger_name):
     logger.propagate = False
     return logger
 
-
+"""
 my_logger = get_logger("my module name")
 my_logger.debug("a debug message!!!")
-
+"""
 
 
 """
