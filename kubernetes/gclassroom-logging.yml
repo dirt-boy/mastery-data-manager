@@ -2,16 +2,19 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: cn-mastery-data-manager
+  namespace: kube-system
+  labels:
+    k8s-app: gclassroom-logging
 spec:
   replicas: 1
   selector:
     matchLabels:
-      cn-mdm: web
+            k8s-app: gclassroom-logging
   template:
     metadata:
       labels:
-        cn-mdm: web
+              k8s-app: gclassroom-logging
     spec:
       containers:
-      - name: cn-mastery-data-manager
+      - name: gclassroom-logging
         image: dirtboy/cn-mastery-data-manager:mdm-prod
