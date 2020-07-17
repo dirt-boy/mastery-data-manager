@@ -1,5 +1,9 @@
+FROM ubuntu 18.04
 FROM selenium/standalone-chrome
-FROM python:3.8
+FROM python 3.8
+FROM logstash
+
+
 
 RUN mkdir /app
 WORKDIR /app
@@ -13,5 +17,5 @@ RUN apt update && apt-get install -y libglib2.0-0 \
 RUN pip install -r requirements.txt
 
 EXPOSE 5000
-CMD ["python", "/app/course_util.py"]
+ENTRYPOINT ["python", "/app/course_util.py"]
 

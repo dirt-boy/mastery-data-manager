@@ -17,7 +17,16 @@ data:
     filter {
         grok {
           patterns_dir => "./patterns"
-          match => { "message" => "%{COURSE_ID:courseId} \ %{COURSE_NAME:courseName} \ %{COURSEWORK_ID:courseWorkId} \ %{COURSEWORK_TITLE:courseWorkTitle} \ %{COURSEWORK_DESCRIPTION:courseWorkDescription} \ %{COURSEWORK_ALTERNATELINK:courseWorkAlternateLink} \ %{COURSEWORK_CREATIONTIME: courseWorkCreationTime} \ %{SUBMISSION_ID:submissionId} \ %{SUBMISSION_STUDENT_ID:studentId} \ %{SUBMISSION_ALTERNATELINK:submissionAlternateLink}"}
+          match => { "courseId" => "%{COURSE_ID:courseId}"\
+                     "courseName" => "%{COURSE_NAME:courseName}"\
+                     "courseWorkId" => "%{COURSEWORK_ID:courseWorkId}"\
+                     "courseWorkTitle" => "%{COURSEWORK_TITLE:courseWorkTitle}"\
+                     "courseWorkDescription" => "%{COURSEWORK_DESCRIPTION:courseWorkDescription}"\
+                     "courseWorkAlternateLink" => "%{COURSEWORK_ALTERNATELINK:courseWorkAlternateLink}"\
+                     "courseWorkCreationTime" => "%{COURSEWORK_CREATIONTIME: courseWorkCreationTime}"\
+                     "submissionId" => "%{SUBMISSION_ID:submissionId}"\
+                     "submissionStudentId" => "%{SUBMISSION_STUDENT_ID:studentId}"\
+                     "submissionAlternateLink" => "%{SUBMISSION_ALTERNATELINK:submissionAlternateLink}"}
           }
         }
 

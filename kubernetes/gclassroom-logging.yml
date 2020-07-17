@@ -1,8 +1,8 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: cn-mastery-data-manager
-  namespace: kube-system
+  name: gclassroom-logging
+  namespace: elastic-system
   labels:
     k8s-app: gclassroom-logging
 spec:
@@ -17,4 +17,4 @@ spec:
     spec:
       containers:
       - name: gclassroom-logging
-        image: dirtboy/cn-mastery-data-manager:mdm-prod
+        image: dirtboy/cn-mastery-data-manager:2.0

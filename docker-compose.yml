@@ -1,0 +1,20 @@
+version: "3.8"
+services:
+        
+  ubuntu:
+    image: ubuntu:18.04
+
+  logstash:
+    image: logstash:7.8.0
+    volumes:
+      - mdm-data:/usr/share/logstash/pipeline/
+
+  selenium:
+    image: selenium/standalone-chrome
+
+  mastery-data-manager:
+    image: dirtboy/cn-mastery-data-manager:mdm-prod
+
+volumes:
+  mdm-data:
+    driver: local

@@ -7,7 +7,7 @@ metadata:
     k8s-app: elasticsearch-logging
 spec:
   serviceName: elasticsearch-logging
-  replicas: 2
+  replicas: 5
   updateStrategy:
     type: RollingUpdate
   selector:
@@ -20,7 +20,7 @@ spec:
     spec:
       serviceAccountName: elasticsearch-logging
       containers:
-      - image: elasticsearch:6.8.4
+      - image: elasticsearch:7.8.0
         name: elasticsearch-logging
         ports:
         - containerPort: 9200
@@ -46,4 +46,5 @@ spec:
         name: elasticsearch-logging-init
         securityContext:
           privileged: true
+
 

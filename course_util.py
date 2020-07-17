@@ -3,16 +3,16 @@ import json
 from pandas.io.json import json_normalize
 from googleapiclient.errors import HttpError
 from googleapiclient.http import BatchHttpRequest
-#import page_util as pg
+import page_util as pg
 import json
 import sys
 sys.path.insert(1, 'logging-test')
 import makelogger as logger
 import httplib2
-#import extract_data as RUBRIC
+import extract_data as RUBRIC
 
 GCLOGGER = logger.get_logger(__name__)
-#REGEX_KEYS = RUBRIC.regex_gen()
+REGEX_KEYS = RUBRIC.regex_gen()
 
 
 CLIENT_SECRET_FILE = 'client_secret.json'
@@ -76,7 +76,7 @@ def itercourses(resp):
 def itercourseworks(resp):
     for i, cw in enumerate(resp['courseWork']):
         coursework_submissions(cw['courseId'], cw['id'])
-        #RUBRIC.rubric(REGEX_KEYS, cw['alternateLink'])        
+        RUBRIC.rubric(REGEX_KEYS, cw['alternateLink'])        
 
 
 
