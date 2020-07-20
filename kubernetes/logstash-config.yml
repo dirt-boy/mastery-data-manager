@@ -3,6 +3,7 @@ kind: ConfigMap
 metadata:
   name: logstash-configmap
   namespace: kube-system
+    
 data:
   logstash.yml: |
     http.host: "0.0.0.0"
@@ -32,7 +33,8 @@ data:
 
     output {
       elasticsearch {
-        hosts => ["elasticsearch-logging:9200"]
+        hosts => "35.197.3.220:9200"
+        manage_template => false
       }
     } 
 

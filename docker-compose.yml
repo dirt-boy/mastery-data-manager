@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3"
 services:
         
   ubuntu:
@@ -7,7 +7,7 @@ services:
   logstash:
     image: logstash:7.8.0
     volumes:
-      - mdm-data:/usr/share/logstash/pipeline/
+      - mdm-data:/usr/share/logstash/pipeline/  
 
   selenium:
     image: selenium/standalone-chrome
@@ -18,3 +18,4 @@ services:
 volumes:
   mdm-data:
     driver: local
+
