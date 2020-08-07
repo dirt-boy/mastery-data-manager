@@ -1,40 +1,12 @@
-apiVersion: v1
-kind: ConfigMap
-metadata:
-  name: logstash-configmap
-  namespace: kube-system
-    
-data:
-  logstash.yml: |
-    http.host: "0.0.0.0"
-    path.config: /usr/share/logstash/pipeline
-  logstash.conf: |
-    input {
-      beats {
-        port => 5044
-        }
-    }
+filebeat.config:
+  modules:
+    path: ${path.config}/modules.d/*.yml
+    reload.enabled: false
+    setup.ilm.enabled: false
 
-    filter {
-        grok {
-          patterns_dir => "./patterns"
-          match => { "courseId" => "%{COURSE_ID:courseId}"\
-                     "courseName" => "%{COURSE_NAME:courseName}"\
-                     "courseWorkId" => "%{COURSEWORK_ID:courseWorkId}"\
-                     "courseWorkTitle" => "%{COURSEWORK_TITLE:courseWorkTitle}"\
-                     "courseWorkDescription" => "%{COURSEWORK_DESCRIPTION:courseWorkDescription}"\
-                     "courseWorkAlternateLink" => "%{COURSEWORK_ALTERNATELINK:courseWorkAlternateLink}"\
-                     "courseWorkCreationTime" => "%{COURSEWORK_CREATIONTIME: courseWorkCreationTime}"\
-                     "submissionId" => "%{SUBMISSION_ID:submissionId}"\
-                     "submissionStudentId" => "%{SUBMISSION_STUDENT_ID:studentId}"\
-                     "submissionAlternateLink" => "%{SUBMISSION_ALTERNATELINK:submissionAlternateLink}"}
-          }
-        }
+processors:
+  - add_cloud_metadata: ~
+  - add_docker_metadata: ~
 
-    output {
-      elasticsearch {
-        hosts => "35.197.3.220:9200"
-        manage_template => false
-      }
-    } 
-
+output.logstash:
+  hosts: [“34.82.224.149:9600”]
