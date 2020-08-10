@@ -24,7 +24,7 @@ spec:
         io.kompose.service: mastery-data-manager
     spec:
       containers:
-      - image: dirtboy/cn-mastery-data-manager:mdm-prod
+      - image: dirtboy/cn-mastery-data-manager:latest
         imagePullPolicy: ""
         name: mastery-data-manager
         resources: {}

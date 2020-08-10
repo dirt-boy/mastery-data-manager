@@ -5,3 +5,4 @@
 *.png
 *.yaml
 *.yml
+!client_secret.json
