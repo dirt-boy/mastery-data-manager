@@ -5,10 +5,10 @@ FORMATTER = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(messag
 LOG_FILE = "my_app.log"
 
 def get_console_handler():
-    #UNIX VERSION
+    UNIX VERSION
     #console_handler = logging.handlers.SysLogHandler(facility=logging.handlers.SysLogHandler.LOG_DAEMON, address="/dev/log")
     #OSX VERSION
-    console_handler = logging.handlers.SysLogHandler(address='/var/run/syslog', facility='local1')
+    #console_handler = logging.handlers.SysLogHandler(address='/var/run/syslog', facility='local1')
     console_handler.setFormatter(FORMATTER)
     return console_handler
 
