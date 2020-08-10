@@ -5,6 +5,8 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import BatchHttpRequest
 import page_util as pg
 import json
+import os.path
+from os import path
 import sys
 sys.path.insert(1, 'logging-test')
 import makelogger as logger
@@ -22,31 +24,54 @@ SCOPES = ['https://www.googleapis.com/auth/classroom.coursework.students https:/
 
 classroom = Create_Service(CLIENT_SECRET_FILE, API_SERVICE_NAME, API_VERSION, SCOPES)
 
+#testing write to file before logging. commenting out logs
+
+test_list = []
 
 def callback_c(request_id, response, exception):
     if exception is not None:
-        GCLOGGER.info(exception)
+        #GCLOGGER.info(exception)
+        print(exception)
         pass
     else:
-        GCLOGGER.info(response)
+        #GCLOGGER.info(response)
+        if(path.exists(str(request_id)+".json")):
+            pass
+        else:
+            #writefile(str(request_id), str(response))
+            test_list.append(response)
         itercourses(response)
         pass
 
 def callback_cw(request_id, response, exception):
     if exception is not None:
-        GCLOGGER.info(exception)
+        #GCLOGGER.info(exception)
+        print(exception)
         pass
     else:
-        GCLOGGER.info(response)
+        #GCLOGGER.info(response)
+        #print(response)
+        if(path.exists(str(request_id)+".json")):
+            pass
+        else:
+            #writefile(str(request_id), str(response))
+            test_list.append(response)
         itercourseworks(response)
         pass
 
 def callback_s(request_id, response, exception):
     if exception is not None:
-        GCLOGGER.info(exception)
+        print(exception)
+        #GCLOGGER.info(exception)
         pass
     else:
-        GCLOGGER.info(response)
+        #GCLOGGER.info(response)
+        #print(response)
+        if(path.exists(str(request_id)+".json")):
+            pass
+        else:
+            test_list.append(response)
+            #writefile(str(request_id), str(response))
         pass
 
 
@@ -76,8 +101,23 @@ def itercourses(resp):
 def itercourseworks(resp):
     for i, cw in enumerate(resp['courseWork']):
         coursework_submissions(cw['courseId'], cw['id'])
-        RUBRIC.rubric(REGEX_KEYS, cw['alternateLink'])        
+        test_list.append(RUBRIC.rubric(REGEX_KEYS, cw['alternateLink']))
 
+def writefile(name, content):
+    save_path = "/Users/gg/NerdStuff/mastery-data-manager/logs"
+    completename = os.path.join(save_path, str(name))
+    with open(completename+".json", "w") as f:
+        f.write(content)
+
+def log_all(results):
+    for res, l in enumerate(results):
+        GCLOGGER.info(res)
+
+def courselist():
+    #get list of courses mapped to ids
+
+def roster(course):
+    #get list of students&teachers mapped to ids
 
 
 
@@ -87,9 +127,8 @@ user_courses()
 batch_c.execute()
 batch_cw.execute()
 batch_s.execute()
-
-
-
+print(str(test_list))
+log_all(test_list)
 
 
 

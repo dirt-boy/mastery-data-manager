@@ -46,7 +46,7 @@ def rubric(regex_keys, url):
     else:
         return None
     
-    GCLOGGER.info(rubric)
+    #GCLOGGER.info(rubric)
     return rubric
     
 
