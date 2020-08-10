@@ -6,7 +6,8 @@ RUN apt-get update && apt-get install -y libglib2.0-0 \
 	libfontconfig1 \
 	sudo \
 	python3 \
-	python3-pip
+	python3-pip\
+	vim
 
 COPY requirements.txt /app/requirements.txt
 WORKDIR /app
@@ -16,5 +17,5 @@ RUN pip3 install -r requirements.txt
 COPY . .
 
 EXPOSE 5000
-ENTRYPOINT ["python3", "/app/course_util.py"]
+ENTRYPOINT ["/bin/bash"]
 

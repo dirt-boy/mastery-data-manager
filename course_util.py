@@ -115,10 +115,11 @@ def log_all(results):
 
 def courselist():
     #get list of courses mapped to ids
+    return
 
 def roster(course):
     #get list of students&teachers mapped to ids
-
+    return
 
 
 

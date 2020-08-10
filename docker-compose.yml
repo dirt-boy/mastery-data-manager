@@ -13,7 +13,7 @@ services:
     image: selenium/standalone-chrome
 
   mastery-data-manager:
-    image: dirtboy/cn-mastery-data-manager:mdm-prod
+    image: dirtboy/cn-mastery-data-manager:latest
 
 volumes:
   mdm-data:
