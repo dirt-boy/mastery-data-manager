@@ -2,5 +2,6 @@
 *.csv
 *.json
 *.html
-*.txt
 *.png
+*.yaml
+*.yml

@@ -1,17 +1,20 @@
-FROM python:3.8
+FROM ubuntu:18.04
 
 RUN apt-get update && apt-get install -y libglib2.0-0 \
 	libnss3 \
 	libgconf-2-4 \
 	libfontconfig1 \
-	sudo
+	sudo \
+	python3 \
+	python3-pip
 
-RUN sudo mkdir /app
-WORKDIR sudo /app
-ADD . /app/
+COPY requirements.txt /app/requirements.txt
+WORKDIR /app
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
 
-RUN pip install -r /app/requirements.txt
+COPY . .
 
 EXPOSE 5000
-ENTRYPOINT ["python", "/app/course_util.py"]
+ENTRYPOINT ["python3"]
 
