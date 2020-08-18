@@ -12,6 +12,9 @@ sys.path.insert(1, 'logging-test')
 import makelogger as logger
 import httplib2
 import extract_data as RUBRIC
+import js2py
+js2py.translate_file('course_util.js', 'course_utiljs.py')
+from course_utiljs import course_utiljs
 
 GCLOGGER = logger.get_logger(__name__)
 REGEX_KEYS = RUBRIC.regex_gen()
@@ -83,12 +86,12 @@ batch_cw = classroom.new_batch_http_request(callback=callback_cw)
 batch_s = classroom.new_batch_http_request(callback=callback_s)
 
 def user_courses():
-    batch_c.add(classroom.courses().list(fields='courses/name,courses/id')) 
+    batch_c.add(classroom.courses().list(fields='courses/name,courses/id'))
 
 
 def course_coursework(courseId):
     batch_cw.add(classroom.courses().courseWork().list(courseId=courseId, fields='courseWork/id,courseWork/title,courseWork/maxPoints,courseWork/description,courseWork/creationTime,courseWork/alternateLink,courseWork/courseId'))
-    
+
 
 def coursework_submissions(courseId, courseworkId):
     batch_s.add(classroom.courses().courseWork().studentSubmissions().list(courseId=courseId, courseWorkId=courseworkId, fields='studentSubmissions/id,studentSubmissions/assignedGrade,studentSubmissions/alternateLink,studentSubmissions/courseWorkId,studentSubmissions/courseId,studentSubmissions/userId'))
@@ -113,9 +116,9 @@ def log_all(results):
     for res, l in enumerate(results):
         GCLOGGER.info(res)
 
-def courselist():
+def courselist(resp):
     #get list of courses mapped to ids
-    return
+    return course_utiljs.getCourseList(resp)
 
 def roster(course):
     #get list of students&teachers mapped to ids
@@ -130,9 +133,3 @@ batch_cw.execute()
 batch_s.execute()
 print(str(test_list))
 log_all(test_list)
-
-
-
-
-
-
