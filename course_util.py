@@ -118,7 +118,11 @@ def log_all(results):
 
 def courselist(resp):
     #get list of courses mapped to ids
-    return course_utiljs.getCourseList(resp)
+    return course_utiljs.getCourseList(resp, "courses")
+
+def courseWorklist(resp):
+    #get list of courses mapped to ids
+    return course_utiljs.getCourseList(resp, "courseWork")
 
 def roster(course):
     #get list of students&teachers mapped to ids

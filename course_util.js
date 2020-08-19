@@ -1,10 +1,10 @@
-function getCourseList(courseData) {
+function getCourseList(courseData, prop) {
     var titles = {}
     for (var i = 0; i <= courseData.length; i++) {
-        if (typeof courseData[i] === 'object' && courseData[i]['courseWork']) {
-            for (var j = 0; j <= courseData[i]['courseWork'].length; j++) {
-                if (courseData[i]['courseWork'][j]) {
-                    titles[courseData[i]['courseWork'][j].id] = courseData[i]['courseWork'][j].title
+        if (typeof courseData[i] === 'object' && courseData[i][prop]) {
+            for (var j = 0; j <= courseData[i][prop].length; j++) {
+                if (courseData[i][prop][j]) {
+                    titles[courseData[i][prop][j].id] = courseData[i][prop][j].title || courseData[i][prop][j].name
                 }
             }
         }
