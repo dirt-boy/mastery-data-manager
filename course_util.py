@@ -116,17 +116,20 @@ def log_all(results):
     for res, l in enumerate(results):
         GCLOGGER.info(res)
 
+def format_all(results):
+    return courseutiljs.formatAll(resp)
+
 def courselist(resp):
     #get list of courses mapped to ids
     return course_utiljs.getCourseList(resp, "courses")
 
 def courseWorklist(resp):
-    #get list of courses mapped to ids
+    #get list of courseWork mapped to ids
     return course_utiljs.getCourseList(resp, "courseWork")
 
 def roster(course):
     #get list of students&teachers mapped to ids
-    return
+    return course_utiljs.getRoster(resp)
 
 
 
@@ -136,4 +139,4 @@ batch_c.execute()
 batch_cw.execute()
 batch_s.execute()
 print(str(test_list))
-log_all(test_list)
+# log_all(test_list)
