@@ -11,3 +11,15 @@ function getCourseList(courseData, prop) {
     }
     return titles
   }
+
+function getRoster(response) {
+  return {}
+}
+
+function formatAll(response) {
+    return {
+      courses: getCourseList(response, 'courses'),
+      courseWork: getCourseList(response, 'courseWork'),
+      roster: getRoster(response)
+    }
+}
