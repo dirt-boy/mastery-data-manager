@@ -32,6 +32,7 @@ def get_login():
         login_info=pickle.load( open('creds.pickle', 'rb'))
         print(login_info)
         return login_info
+    #add exception for invalid login!!!
     else:
         credentials = creds.write_creds()
         login_info = pickle.load( open(credentials, 'wb'))
