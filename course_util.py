@@ -145,6 +145,9 @@ def roster(course):
     #get list of students&teachers mapped to ids
     return course_utiljs.getRoster(resp)
 
+def course_rosters(resp):
+    #get list of students&teachers per course
+    return course_utiljs.rosterByCourse(resp)
 
 
 user_courses()
@@ -153,5 +156,6 @@ batch_c.execute()
 batch_cw.execute()
 batch_s.execute()
 
-print(str(test_list))
+# print(str(test_list))
+print(course_utiljs.rosterByCourse(test_list))
 # log_all(test_list)
