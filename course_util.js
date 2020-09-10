@@ -12,8 +12,30 @@ function getCourseList(courseData, prop) {
     return titles
   }
 
-function getRoster(response) {
-  return {}
+function getRoster(resp) {
+  var roster = {
+    teachers: {},
+    students: {}
+  }
+  for (var i = 0; i<= resp.length; i++) {
+    if(typeof resp[i] === 'object' && (resp[i].teachers || resp[i].students)) {
+      if (resp[i].teachers) {
+        for (var j = 0; j <= resp[i].teachers.length; j++) {
+          if (resp[i].teachers[j]) {
+            roster.teachers[resp[i].teachers[j].userId] = resp[i].teachers[j].profile.name.fullName
+          }
+        }
+      }
+      if (resp[i].students) {
+        for (var j = 0; j <= resp[i].students.length; j++) {
+          if (resp[i].students[j]) {
+            roster.students[resp[i].students[j].userId] = resp[i].students[j].profile.name.fullName
+          }
+        }
+      }
+    }
+  }
+  return roster
 }
 
 function formatAll(response) {

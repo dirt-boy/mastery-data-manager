@@ -1,6 +1,6 @@
 import json
 import js2py
-js2py.translate_file('course_util.js', 'tests/course_utiljs.py')
+js2py.translate_file('course_util.js', 'course_utiljs.py')
 from course_utiljs import course_utiljs
 import unittest
 
@@ -69,7 +69,82 @@ sample_d = [{
             "title": "bbb"
         }]
     }]
-
+sample_e = [{
+        "teachers": [{
+            "courseId": 1,
+            "userId": 1,
+            "profile": {
+                "name": {
+                    "fullName": "Ee Ff"
+                }
+            }
+        },
+        {
+            "courseId": 1,
+            "userId": 2,
+            "profile": {
+                "name": {
+                    "fullName": "Gg Hh"
+                }
+            }
+        }],
+        "students": [{
+            "courseId": 1,
+            "userId": 5,
+            "profile": {
+                "name": {
+                    "fullName": "Aa Bb"
+                }
+            }
+        },
+        {
+            "courseId": 1,
+            "userId": 6,
+            "profile": {
+                "name": {
+                    "fullName": "Cc Dd"
+                }
+            }
+        }]
+    },
+    {
+        "teachers": [{
+            "courseId": 2,
+            "userId": 3,
+            "profile": {
+                "name": {
+                    "fullName": "Aa Cc"
+                }
+            }
+        },
+        {
+            "courseId": 2,
+            "userId": 4,
+            "profile": {
+                "name": {
+                    "fullName": "Bb Dd"
+                }
+            }
+        }],
+        "students": [{
+            "courseId": 2,
+            "userId": 7,
+            "profile": {
+                "name": {
+                    "fullName": "Cc Ee"
+                }
+            }
+        },
+        {
+            "courseId": 2,
+            "userId": 8,
+            "profile": {
+                "name": {
+                    "fullName": "Ee Gg"
+                }
+            }
+        }]
+    }]
 sample_x = []
 
 class TestClassroomMethods(unittest.TestCase):
@@ -99,7 +174,21 @@ class TestClassroomMethods(unittest.TestCase):
         self.assertEqual(str(course_utiljs.getCourseList(sample_x, 'courseWork')), str({}))
 
     def test_roster(self):
-        self.assertEqual(str(course_utiljs.getRoster(sample_x)), str({}))
+        self.assertEqual(str(course_utiljs.getRoster(sample_e)), str({
+            "students": {
+                "5": "Aa Bb",
+                "6": "Cc Dd",
+                "7": "Cc Ee",
+                "8": "Ee Gg"
+            },
+            "teachers": {
+                "1": "Ee Ff",
+                "2": "Gg Hh",
+                "3": "Aa Cc",
+                "4": "Bb Dd"
+            }
+        }))
+        self.assertEqual(str(course_utiljs.getRoster(sample_x)), str({'students': {}, 'teachers': {}}))
 
 if __name__ == '__main__':
     unittest.main()
