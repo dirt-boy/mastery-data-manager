@@ -23,7 +23,7 @@ REGEX_KEYS = RUBRIC.regex_gen()
 CLIENT_SECRET_FILE = 'client_secret.json'
 API_SERVICE_NAME = 'classroom'
 API_VERSION = 'v1'
-SCOPES = ['https://www.googleapis.com/auth/classroom.coursework.students https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.rosters']
+SCOPES = ['https://www.googleapis.com/auth/classroom.coursework.students https://www.googleapis.com/auth/classroom.courses https://www.googleapis.com/auth/classroom.rosters https://www.googleapis.com/auth/classroom.profile.emails']
 
 classroom = Create_Service(CLIENT_SECRET_FILE, API_SERVICE_NAME, API_VERSION, SCOPES)
 
@@ -98,6 +98,7 @@ def course_students(courseId):
 def course_coursework(courseId):
     batch_cw.add(classroom.courses().courseWork().list(courseId=courseId, fields='courseWork/id,courseWork/title,courseWork/maxPoints,courseWork/description,courseWork/creationTime,courseWork/alternateLink,courseWork/courseId'))
 
+
 def coursework_submissions(courseId, courseworkId):
     batch_s.add(classroom.courses().courseWork().studentSubmissions().list(courseId=courseId, courseWorkId=courseworkId, fields='studentSubmissions/id,studentSubmissions/assignedGrade,studentSubmissions/alternateLink,studentSubmissions/courseWorkId,studentSubmissions/courseId,studentSubmissions/userId'))
 
@@ -141,7 +142,7 @@ def courseWorklist(resp):
     #get list of courseWork mapped to ids
     return course_utiljs.getCourseList(resp, "courseWork")
 
-def roster(course):
+def roster(resp):
     #get list of students&teachers mapped to ids
     return course_utiljs.getRoster(resp)
 
@@ -158,4 +159,5 @@ batch_s.execute()
 
 # print(str(test_list))
 print(course_utiljs.rosterByCourse(test_list))
+print(str(test_list))
 # log_all(test_list)
