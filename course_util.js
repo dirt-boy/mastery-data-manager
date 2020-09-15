@@ -84,6 +84,7 @@ function formatAll(response) {
     return {
       courses: getCourseList(response, 'courses'),
       courseWork: getCourseList(response, 'courseWork'),
-      roster: getRoster(response)
+      roster: getRoster(response),
+      rosterByCourse: rosterByCourse(response)
     }
 }

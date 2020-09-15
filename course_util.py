@@ -157,7 +157,5 @@ batch_c.execute()
 batch_cw.execute()
 batch_s.execute()
 
-# print(str(test_list))
-print(course_utiljs.rosterByCourse(test_list))
-print(str(test_list))
+print(str(course_utiljs.formatAll(test_list)))
 # log_all(test_list)
