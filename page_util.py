@@ -48,24 +48,41 @@ def get_page(email, password, url):
     try:
         
         driver.get(url)
+        #prt_scr("page1")
         email_phone = driver.find_element_by_xpath("//input[@id='Email']")
+        #prt_scr("page2")
+        #get_src("page2")
         email_phone.send_keys(email)
+        #prt_scr("page3")
+        #get_src("page3")
         driver.find_element_by_id("next").click()
+        #prt_scr("page4")
         WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.XPATH, "//input[@id='password']")))
+        #prt_scr("page5")
         pwd = driver.find_element_by_xpath("//input[@id='password']")
+        #prt_scr("page6")
         pwd.send_keys(password)
+        #prt_scr("page7")
         driver.find_element_by_id("submit").click()
+        #prt_scr("page8")
+        #get_src("page8")
+        html = driver.page_source
         driver.find_element_by_css_selector(".rag0").click()
+        #prt_scr("page9")
+        #get_src("page9")
         pass
     except:
-        return None
+        pass
     time.sleep(5)
     
+    prt_scr(str(url))
     html = driver.page_source
 
-    driver.close()
 
     return html
+
+def end_session():
+    driver.quit()
 
 def prt_scr(name):
     img =driver.save_screenshot(name+'.png')
