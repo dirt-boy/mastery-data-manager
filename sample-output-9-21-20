@@ -1,0 +1,88 @@
+{'courseWork': 
+
+	{'114571495391': 'rubric test', 
+	 '114738078388': 'test rubric 2!', 
+	 '114891396797': 'Unit 3 Project: Hire Me!', 
+	 '115902075698': 'big rubric test', 
+	 '122501616775': 'Unit 8 Project', 
+	 '127701444951': '3.P: Hire Me!'}, 
+
+'courses': 
+	{'114571495383': 'CN Test v.1.0', 
+	 '127701444888': 'TEST ABC SCHOOL Class 20-21', 
+	 '54975257662': 'Test Intro Class 20-21'}, 
+
+	 'roster': 
+	 	{'students': 
+	 		{'105878253125061102644': 'Jessica Peña', 
+	 		'107578016100368785334': 'Francesca Balbi', 
+	 		'110847403598379770562': 'Gabriel Gagnon', 
+	 		'110930984913421406808': 'Michael Oppong', 
+	 		'113801663670285909656': 'Alyxe Lett'}, 
+	 	'teachers': 
+	 		{'104472175234977110757': 'Alyxe Lett',
+	 		 '109086827838782743514': 'Classroom Admin'}},
+
+	 	'rosterByCourse': 
+	 		{'114571495383': 
+	 			{'students': 
+	 				{}, 
+	 			 'teachers': 
+	 			 	{'109086827838782743514': 
+	 			 		{'courseId': '114571495383', 
+	 			 		 	'profile': {'emailAddress': 'classroom.admin@codenation.org', 'id': '109086827838782743514', 'name': {'familyName': 'Admin', 'fullName': 'Classroom Admin', 'givenName': 'Classroom'}, 'permissions': [{'permission': 'CREATE_COURSE'}], 'verifiedTeacher': True}, 'userId': '109086827838782743514'}}},
+	 		'127701444888': 
+	 			{'students': 
+	 				{'105878253125061102644': 
+	 					{'courseId': '127701444888', 
+	 						'profile': {'emailAddress': 'jessica.pena@codenation.org', 'id': '105878253125061102644', 'name': {'familyName': 'Peña', 'fullName': 'Jessica Peña', 'givenName': 'Jessica'}, 'permissions': [{'permission': 
+	 							'CREATE_COURSE'}], 'verifiedTeacher': True}, 'userId': '105878253125061102644'},
+
+	 				'107578016100368785334': 
+	 					{'courseId': '127701444888', 
+	 					 	'profile': {'emailAddress': 'fra.balbi@codenation.org', 'id': '107578016100368785334', 'name': {'familyName': 'Balbi', 'fullName': 'Francesca Balbi', 'givenName': 'Francesca'}, 'permissions': [{'permission': 
+	 					 		'CREATE_COURSE'}]}, 'userId': '107578016100368785334'},
+
+	 				'110847403598379770562': 
+	 					{'courseId': '127701444888', 
+	 						'profile': {'emailAddress': 'gabriel.gagnon@codenation.org', 'id': '110847403598379770562', 'name': {'familyName': 'Gagnon', 'fullName': 'Gabriel Gagnon', 'givenName': 'Gabriel'}}, 'userId': '110847403598379770562'
+	 					}, 
+
+	 				'110930984913421406808': 
+	 					{'courseId': '127701444888', 
+	 						'profile': {'emailAddress': 'michael.oppong@codenation.org', 'id': '110930984913421406808', 'name': {'familyName': 'Oppong', 'fullName': 'Michael Oppong', 'givenName': 'Michael'}, 'permissions': [{'permission': 
+	 							'CREATE_COURSE'}], 'verifiedTeacher': True}, 'userId': '110930984913421406808'}}, 
+
+	 			'teachers': 
+	 				{'104472175234977110757':
+	 					 {'courseId': '127701444888', 
+	 					 	'profile': {'emailAddress': 'alyxe.lett@codenation.org', 'id': '104472175234977110757', 'name': {'familyName': 'Lett', 'fullName': 'Alyxe Lett', 'givenName': 'Alyxe'}, 'permissions': [{'permission': 
+	 					 		'CREATE_COURSE'}], 'verifiedTeacher': True}, 'userId': '104472175234977110757'},
+
+	 				'109086827838782743514': 
+	 					 {'courseId': '127701444888', 'profile': {'emailAddress': 'classroom.admin@codenation.org', 'id': '109086827838782743514', 'name': {'familyName': 'Admin', 'fullName': 'Classroom Admin', 'givenName': 'Classroom'}, 'permissions': [{'permission': 'CREATE_COURSE'}], 'verifiedTeacher': True}, 'userId': '109086827838782743514'}}}, 
+
+	 		 '54975257662': 
+	 		 	{'students': 
+	 		 		{'107578016100368785334': 
+	 		 			{'courseId': '54975257662', 'profile': {'emailAddress': 'fra.balbi@codenation.org', 'id': '107578016100368785334', 'name': {'familyName': 'Balbi', 'fullName': 'Francesca Balbi', 'givenName': 'Francesca'}, 'permissions': [{'permission': 'CREATE_COURSE'}]}, 'userId': '107578016100368785334'}, 
+
+	 		 		'110847403598379770562': 
+	 		 			{'courseId': '54975257662', 'profile': {'emailAddress': 'gabriel.gagnon@codenation.org', 'id': '110847403598379770562', 'name': {'familyName': 'Gagnon', 'fullName': 'Gabriel Gagnon', 'givenName': 'Gabriel'}}, 'userId': '110847403598379770562'}, 
+
+	 		 	 	'110930984913421406808': {'courseId': '54975257662', 'profile': {'emailAddress': 'michael.oppong@codenation.org', 'id': '110930984913421406808', 'name': {'familyName': 'Oppong', 'fullName': 'Michael Oppong', 'givenName': 'Michael'}, 'permissions': [{'permission': 'CREATE_COURSE'}], 'verifiedTeacher': True}, 'userId': '110930984913421406808'}, 
+
+	 		 	 	'113801663670285909656': {'courseId': '54975257662', 'profile': {'emailAddress': 'alexandra.s.lett@gmail.com', 'id': '113801663670285909656', 'name': {'familyName': 'Lett', 'fullName': 'Alyxe Lett', 'givenName': 'Alyxe'}, 'permissions': [{'permission': 'CREATE_COURSE'}]}, 'userId': '113801663670285909656'}}, 
+
+	 		 	 'teachers': 
+	 		 	 	{'104472175234977110757': 
+	 		 	 		{'courseId': '54975257662', 'profile': {'emailAddress': 'alyxe.lett@codenation.org', 'id': '104472175234977110757', 'name': {'familyName': 'Lett', 'fullName': 'Alyxe Lett', 'givenName': 'Alyxe'}, 'permissions': [{'permission': 'CREATE_COURSE'}], 'verifiedTeacher': True}, 'userId': '104472175234977110757'}, 
+
+	 		 	 	'109086827838782743514': 
+	 		 	 		{'courseId': '54975257662', 'profile': {'emailAddress': 'classroom.admin@codenation.org', 'id': '109086827838782743514', 'name': {'familyName': 'Admin', 'fullName': 'Classroom Admin', 'givenName': 'Classroom'}, 'permissions': [{'permission': 'CREATE_COURSE'}], 'verifiedTeacher': True}, 'userId': '109086827838782743514'}
+	 		 	 	}
+	 		 	}
+	 		}
+}
+
+

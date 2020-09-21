@@ -5,7 +5,7 @@ from googleapiclient.errors import HttpError
 from googleapiclient.http import BatchHttpRequest
 import page_util as pg
 import json
-import os.path
+
 from os import path
 import sys
 sys.path.insert(1, 'logging-test')
@@ -150,12 +150,12 @@ def course_rosters(resp):
     #get list of students&teachers per course
     return course_utiljs.rosterByCourse(resp)
 
+def pullall():
+    user_courses()
+    batch_c.execute()
+    batch_cw.execute()
+    batch_s.execute()
+    return str(course_utiljs.formatAll(test_list))
 
-user_courses()
+pullall()
 
-batch_c.execute()
-batch_cw.execute()
-batch_s.execute()
-
-print(str(course_utiljs.formatAll(test_list)))
-# log_all(test_list)
