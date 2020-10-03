@@ -17,7 +17,8 @@ js2py.translate_file('course_util.js', 'course_utiljs.py')
 from course_utiljs import course_utiljs
 
 GCLOGGER = logger.get_logger(__name__)
-REGEX_KEYS = RUBRIC.regex_gen()
+RUBRIC_REGEX_KEYS = RUBRIC.regex_gen(0)
+SUBMISSION_REGEX_KEYS = RUBRIC.regex_gen(1)
 
 
 CLIENT_SECRET_FILE = 'client_secret.json'
@@ -77,6 +78,7 @@ def callback_s(request_id, response, exception):
         else:
             test_list.append(response)
             #writefile(str(request_id), str(response))
+        itersubmissions(response)
         pass
 
 batch_c = classroom.new_batch_http_request(callback=callback_c)
@@ -119,7 +121,12 @@ def itercourseworks(resp):
     if hasattr(resp, 'courseWork'):
         for i, cw in enumerate(resp['courseWork']):
             coursework_submissions(cw['courseId'], cw['id'])
-            test_list.append(RUBRIC.rubric(REGEX_KEYS, cw['alternateLink']))
+            test_list.append(RUBRIC.rubric(RUBRIC_REGEX_KEYS, cw['alternateLink']))
+
+def itersubmissions(resp):
+    if hasattr(resp, 'studentSubmissions'):
+        for i, s in enumerate(resp['studentSubmissions']):
+            test_list.append(RUBRIC.rubric(SUBMISSION_REGEX_KEYS, s['alternateLink']))
 
 def writefile(name, content):
     save_path = "/Users/gg/NerdStuff/mastery-data-manager/logs"
@@ -157,5 +164,5 @@ def pullall():
     batch_s.execute()
     return str(course_utiljs.formatAll(test_list))
 
-pullall()
+print(pullall())
 
