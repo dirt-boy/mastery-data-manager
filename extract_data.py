@@ -24,7 +24,7 @@ def regex_gen(index):
         print(str(i)+': '+str(keys))
     else:
         for key in keylist[index]:
-            regex = '(?<=class=\"'+keylist[index][key]+'\" tabindex="-1" aria-label=)(.*?)(?=data-tooltip=)'
+            regex = '(?<=class=\"'+keylist[index][key]+' \" tabindex="0" aria-label=")(.*?)(?=data-tooltip=)'
             keys.append([key, regex])
             i += 1
         print(str(i)+': '+str(keys))
@@ -37,11 +37,12 @@ def rubric(regex_keys, url):
 
     if raw != None:
         
-        title = re.findall(regex_keys[0][0][1], raw)
-        criteria = re.findall(regex_keys[0][1][1], raw)
-        descriptions = re.findall(regex_keys[0][2][1], raw)
-        level_titles = re.findall(regex_keys[0][3][1], raw)
-        point_values = re.findall(regex_keys[0][4][1], raw)
+
+        title = re.findall(regex_keys[0][1], raw)
+        criteria = re.findall(regex_keys[1][1], raw)
+        descriptions = re.findall(regex_keys[2][1], raw)
+        level_titles = re.findall(regex_keys[3][1], raw)
+        point_values = re.findall(regex_keys[4][1], raw)
     
         criteria = list(dict.fromkeys(criteria))
     
@@ -68,8 +69,10 @@ def submission(regex_keys, url):
     raw = page.get_page(*creds, url)
 
     if raw != None:
+
+        print(regex_keys[1][1])
         
-        criterion_grade = re.findall(regex_keys[1][0][1], raw)
+        criterion_grade = re.findall(regex_keys[1][1], raw)
 
     else:
         return None
@@ -79,9 +82,8 @@ def submission(regex_keys, url):
     return criterion_grade
 
     
-
-test = submission(regex_gen(1), 'https://classroom.google.com/u/3/c/NTQ5NzUyNTc2NjJa/a/MTIyNTAxNjE2Nzc1/submissions/by-status/and-sort-last-name/student/Mzc0NjkzNzgyMjZa')
-print(test)
+test_s = submission(regex_gen(1), 'https://classroom.google.com/u/3/c/NTQ5NzUyNTc2NjJa/a/MTIyNTAxNjE2Nzc1/submissions/by-status/and-sort-last-name/student/MTYzNzQ0Mzk4NjRa')
+print(str(test_s))
 
 
 
