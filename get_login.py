@@ -7,8 +7,11 @@ def get_creds():
     return [email, password]
 
 def write_creds():
-    with open('creds.pickle', 'x') as creds:
-        credfile = pickle.dump(get_creds(), creds)
+    with open('creds.pickle', 'wb+') as creds:
+        cred_r = get_creds()
+        print("cred_r: "+str(cred_r)+"\n")
+        print("creds: "+ str(creds)+"\n")
+        credfile = pickle.dump(cred_r, creds)
         print(credfile)
     return credfile
 

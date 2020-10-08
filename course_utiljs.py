@@ -12,7 +12,7 @@ var.registers(['getRoster', 'rosterByCourse', 'formatAll', 'getCourseList'])
 @Js
 def PyJsHoisted_getCourseList_(courseData, prop, this, arguments, var=var):
     var = Scope({'courseData':courseData, 'prop':prop, 'this':this, 'arguments':arguments}, var)
-    var.registers(['j', 'prop', 'i', 'titles', 'courseData'])
+    var.registers(['j', 'prop', 'i', 'courseData', 'titles'])
     var.put('titles', Js({}))
     #for JS loop
     var.put('i', Js(0.0))
@@ -35,7 +35,7 @@ var.put('getCourseList', PyJsHoisted_getCourseList_)
 @Js
 def PyJsHoisted_getRoster_(resp, this, arguments, var=var):
     var = Scope({'resp':resp, 'this':this, 'arguments':arguments}, var)
-    var.registers(['roster', 'j', 'resp', 'i'])
+    var.registers(['roster', 'i', 'j', 'resp'])
     var.put('roster', Js({'teachers':Js({}),'students':Js({})}))
     #for JS loop
     var.put('i', Js(0.0))
@@ -68,7 +68,7 @@ var.put('getRoster', PyJsHoisted_getRoster_)
 @Js
 def PyJsHoisted_rosterByCourse_(resp, this, arguments, var=var):
     var = Scope({'resp':resp, 'this':this, 'arguments':arguments}, var)
-    var.registers(['roster', 'j', 'resp', 'i'])
+    var.registers(['roster', 'i', 'j', 'resp'])
     var.put('roster', Js({}))
     #for JS loop
     var.put('i', Js(0.0))
