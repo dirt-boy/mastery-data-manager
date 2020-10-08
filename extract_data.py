@@ -5,13 +5,18 @@ import sys
 sys.path.insert(1, 'logging-test')
 import makelogger as logger
 
+
+
 GCLOGGER = logger.get_logger(__name__)
 
 creds = page.get_login()
 
+page_title_regex = '(?<=<title>).*(?=<\/title>)'
+
 keylist=keys.KEYS()
 
 dict = {}
+
 
 def regex_gen(index):
     keys = []
@@ -21,19 +26,19 @@ def regex_gen(index):
             regex = '(?<=class=\"'+keylist[index][key]+'\">)(.*?)(?=\<\/)'
             keys.append([key, regex])
             i += 1
-        print(str(i)+': '+str(keys))
     else:
         for key in keylist[index]:
             regex = '(?<=class=\"'+keylist[index][key]+' \" tabindex="0" aria-label=")(.*?)(?=data-tooltip=)'
             keys.append([key, regex])
             i += 1
-        print(str(i)+': '+str(keys))
     return keys
 
 def rubric(regex_keys, url):
-    print('URL: '+url+'\n')
 
     raw = page.get_page(*creds, url)
+    print('GETTING RUBRIC...')
+    print(url)
+    #page.prt_scr('error')
 
     if raw != None:
         
@@ -47,8 +52,8 @@ def rubric(regex_keys, url):
         criteria = list(dict.fromkeys(criteria))
     
         rubric = {}
+        print(title)
         rubric['title'] = title[0]
-        print(rubric['title'])
         rubric['criteria'] = []
         for i in range(0, len(criteria)):
             rubric['criteria'].append({'criterion'+str(i): criteria[i], 'content': []})
@@ -63,16 +68,24 @@ def rubric(regex_keys, url):
     #GCLOGGER.info(rubric)
     return rubric
 
-def submission(regex_keys, url):
-    print('URL: '+url+'\n')
+def submission(regex_keys, url, cw_id, ref):
+    #print('URL: '+url+'\n')
+    print('GETTING GRADE... URL is: '+url+'\n')
 
+    print(ref)
+    title = ref['courseWork']['cw_id']
+    print(title)
     raw = page.get_page(*creds, url)
+    #page_title = re.findall(page_title_regex, raw)
+    print(page_title)
 
-    if raw != None:
 
-        print(regex_keys[1][1])
+    if raw != None and 'Project' in page_title:
         
         criterion_grade = re.findall(regex_keys[1][1], raw)
+        print(criterion_grade)
+        print('\n')
+        print('...')
 
     else:
         return None
@@ -82,8 +95,6 @@ def submission(regex_keys, url):
     return criterion_grade
 
     
-test_s = submission(regex_gen(1), 'https://classroom.google.com/u/3/c/NTQ5NzUyNTc2NjJa/a/MTIyNTAxNjE2Nzc1/submissions/by-status/and-sort-last-name/student/MTYzNzQ0Mzk4NjRa')
-print(str(test_s))
 
 
 

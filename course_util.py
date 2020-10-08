@@ -86,47 +86,65 @@ batch_cw = classroom.new_batch_http_request(callback=callback_cw)
 batch_s = classroom.new_batch_http_request(callback=callback_s)
 
 def user_courses():
+    print('USER COURSES:\n')
     batch_c.add(classroom.courses().list(fields='courses/name,courses/id'))
 
 
 def course_teachers(courseId):
+    print('COURSE TEACHERS:\n')
     batch_cw.add(classroom.courses().teachers().list(courseId=courseId, fields='teachers/courseId,teachers/userId,teachers/profile'))
 
 
 def course_students(courseId):
+    print('COURSE STUDENTS:\n')
     batch_cw.add(classroom.courses().students().list(courseId=courseId, fields='students/courseId,students/userId,students/profile'))
 
 
 def course_coursework(courseId):
+    print('COURSE COURSEWORK\n')
     batch_cw.add(classroom.courses().courseWork().list(courseId=courseId, fields='courseWork/id,courseWork/title,courseWork/maxPoints,courseWork/description,courseWork/creationTime,courseWork/alternateLink,courseWork/courseId'))
 
 
 def coursework_submissions(courseId, courseworkId):
+    print('COURSEWORK SUBMISSIONS\n')
     batch_s.add(classroom.courses().courseWork().studentSubmissions().list(courseId=courseId, courseWorkId=courseworkId, fields='studentSubmissions/id,studentSubmissions/assignedGrade,studentSubmissions/alternateLink,studentSubmissions/courseWorkId,studentSubmissions/courseId,studentSubmissions/userId'))
 
 
 def iterteachers(resp):
+    print('TEACHERS:\n')
     for i, t in enumerate(resp['courses']):
         course_teachers(t['id'])
 
 def iterstudents(resp):
+    print('STUDENTS:\n')
     for i, st in enumerate(resp['courses']):
         course_students(st['id'])
 
 def itercourses(resp):
+    print('COURSES:\n')
     for i, c in enumerate(resp['courses']):
         course_coursework(c['id'])
 
 def itercourseworks(resp):
-    if hasattr(resp, 'courseWork'):
+    print('COURSEWORKS:\n')
+    print(resp)
+    if 'courseWork' in resp:
         for i, cw in enumerate(resp['courseWork']):
             coursework_submissions(cw['courseId'], cw['id'])
-            test_list.append(RUBRIC.rubric(RUBRIC_REGEX_KEYS, cw['alternateLink']))
+            if ('Project' in cw['title']): 
+                test_list.append(
+
+                    RUBRIC.rubric(RUBRIC_REGEX_KEYS, cw['alternateLink'])
+
+                    )
 
 def itersubmissions(resp):
-    if hasattr(resp, 'studentSubmissions'):
+    print('SUBMISSIONS:\n')
+    if 'studentSubmissions' in resp:
+        print(resp)
         for i, s in enumerate(resp['studentSubmissions']):
-            test_list.append(RUBRIC.rubric(SUBMISSION_REGEX_KEYS, s['alternateLink']))
+            print(s['courseWorkId'])
+            test_list.append(RUBRIC.submission(SUBMISSION_REGEX_KEYS, s['alternateLink'], s['courseWorkId'], json.loads(ref)))
 
 def writefile(name, content):
     save_path = "/Users/gg/NerdStuff/mastery-data-manager/logs"
@@ -157,12 +175,27 @@ def course_rosters(resp):
     #get list of students&teachers per course
     return course_utiljs.rosterByCourse(resp)
 
-def pullall():
+def pullbase():
     user_courses()
     batch_c.execute()
     batch_cw.execute()
-    batch_s.execute()
+    #batch_s.execute()
     return str(course_utiljs.formatAll(test_list))
+    #return(str(test_list))
 
-print(pullall())
+ref_r = pullbase()
+ref_f = ref_r.replace("'", '"')
+ref_d = json.loads(ref_f)
+
+def pullcustom():
+    batch_s.execute()
+    return(str(test_list))
+
+
+print(ref_r)
+print(ref_f)
+print(ref_d)
+print(pullcustom())
+
+
 

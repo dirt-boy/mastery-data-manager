@@ -75,7 +75,7 @@ def get_page(email, password, url):
         pass
     time.sleep(5)
     
-    prt_scr(str(url))
+    #prt_scr(str(url))
     html = driver.page_source
 
 
