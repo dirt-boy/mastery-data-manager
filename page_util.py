@@ -64,11 +64,11 @@ def get_page(email, password, url):
         pwd.send_keys(password)
         #prt_scr("page7")
         driver.find_element_by_id("submit").click()
-        #prt_scr("page8")
+        prt_scr("page8")
         #get_src("page8")
         html = driver.page_source
         driver.find_element_by_css_selector(".rag0").click()
-        #prt_scr("page9")
+        prt_scr("page9")
         #get_src("page9")
         pass
     except:

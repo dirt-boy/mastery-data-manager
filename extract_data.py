@@ -23,7 +23,7 @@ def regex_gen(index):
     i=0
     if index==0:
         for key in keylist[index]:
-            regex = '(?<=class=\"'+keylist[index][key]+'\">)(.*?)(?=\<\/)'
+            regex = '(?<=class=\"'+keylist[index][key]+'\">)(.*?)(?=<)'
             keys.append([key, regex])
             i += 1
     else:
@@ -41,25 +41,30 @@ def rubric(regex_keys, url):
     #page.prt_scr('error')
 
     if raw != None:
+        #print("\nRAW:\n"+raw)
+        print(regex_keys[0][1])
         
-
-        title = re.findall(regex_keys[0][1], raw)
-        criteria = re.findall(regex_keys[1][1], raw)
-        descriptions = re.findall(regex_keys[2][1], raw)
-        level_titles = re.findall(regex_keys[3][1], raw)
-        point_values = re.findall(regex_keys[4][1], raw)
-    
-        criteria = list(dict.fromkeys(criteria))
-    
-        rubric = {}
-        print(title)
-        rubric['title'] = title[0]
-        rubric['criteria'] = []
-        for i in range(0, len(criteria)):
-            rubric['criteria'].append({'criterion'+str(i): criteria[i], 'content': []})
-            for j in range(((i+1)*3)-3, (i+1)*3):
-                rubric['criteria'][i]['content'].append({'description': descriptions[j], 'level title': level_titles[j], 'point value': point_values[j]})
-
+        try:
+            #page.get_src('title-blank')
+            #page.prt_scr('title-blank')
+            title = re.findall(page_title_regex, raw)
+            criteria = re.findall(regex_keys[1][1], raw)
+            descriptions = re.findall(regex_keys[2][1], raw)
+            level_titles = re.findall(regex_keys[3][1], raw)
+            point_values = re.findall(regex_keys[4][1], raw)
+        
+            criteria = list(dict.fromkeys(criteria))
+        
+            rubric = {}
+            print(title)
+            rubric['title'] = title[0]
+            rubric['criteria'] = []
+            for i in range(0, len(criteria)):
+                rubric['criteria'].append({'criterion'+str(i): criteria[i], 'content': []})
+                for j in range(((i+1)*3)-3, (i+1)*3):
+                    rubric['criteria'][i]['content'].append({'description': descriptions[j], 'level title': level_titles[j], 'point value': point_values[j]})
+        except:
+            print('Rubric not found.')
 
     else:
         return None
@@ -72,23 +77,22 @@ def submission(regex_keys, url, cw_id, ref):
     #print('URL: '+url+'\n')
     print('GETTING GRADE... URL is: '+url+'\n')
 
-    print(ref)
-    title = ref['courseWork']['cw_id']
+    title = ref['courseWork'][cw_id]
     print(title)
-    raw = page.get_page(*creds, url)
+    
     #page_title = re.findall(page_title_regex, raw)
-    print(page_title)
+    #print(page_title)
 
 
-    if raw != None and 'Project' in page_title:
-        
+    if 'Project' in title:
+        raw = page.get_page(*creds, url)
         criterion_grade = re.findall(regex_keys[1][1], raw)
         print(criterion_grade)
         print('\n')
         print('...')
 
     else:
-        return None
+        return "Non-Project"
         
     
     #GCLOGGER.info(rubric)
