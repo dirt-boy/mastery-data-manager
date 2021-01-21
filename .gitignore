@@ -6,3 +6,6 @@
 *.yaml
 *.yml
 !client_secret.json
+deprecated/**
+kubernetes/**
+logging-test/**

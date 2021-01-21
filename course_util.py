@@ -16,6 +16,7 @@ import js2py
 js2py.translate_file('course_util.js', 'course_utiljs.py')
 from course_utiljs import course_utiljs
 import find_except as exc
+import to_csv as csv
 
 GCLOGGER = logger.get_logger(__name__)
 RUBRIC_REGEX_KEYS = RUBRIC.regex_gen(0)
@@ -32,6 +33,7 @@ classroom = Create_Service(CLIENT_SECRET_FILE, API_SERVICE_NAME, API_VERSION, SC
 #testing write to file before logging. commenting out logs
 
 test_list = []
+sub_list = []
 
 def callback_c(request_id, response, exception):
     if exception is not None:
@@ -108,7 +110,7 @@ def course_coursework(courseId):
 
 def coursework_submissions(courseId, courseworkId):
     #print('COURSEWORK SUBMISSIONS\n')
-    batch_s.add(classroom.courses().courseWork().studentSubmissions().list(courseId=courseId, courseWorkId=courseworkId, fields='studentSubmissions/id,studentSubmissions/assignedGrade,studentSubmissions/alternateLink,studentSubmissions/courseWorkId,studentSubmissions/courseId,studentSubmissions/userId'))
+    batch_s.add(classroom.courses().courseWork().studentSubmissions().list(courseId=courseId, courseWorkId=courseworkId, fields='studentSubmissions/id,studentSubmissions/assignedGrade,studentSubmissions/alternateLink,studentSubmissions/courseWorkId,studentSubmissions/courseId,studentSubmissions/userId,studentSubmissions/state'))
 
 
 def iterteachers(resp):
@@ -142,10 +144,15 @@ def itercourseworks(resp):
 def itersubmissions(resp):
     #print('SUBMISSIONS:\n')
     if 'studentSubmissions' in resp:
-        #print(resp)
+        print(resp)
         for i, s in enumerate(resp['studentSubmissions']):
             #print(s['courseWorkId'])
-            test_list.append(RUBRIC.submission(SUBMISSION_REGEX_KEYS, s['alternateLink'], s['courseWorkId'], ref_d))
+            if(s['state'] == 'RETURNED'):
+                test_list.append(RUBRIC.submission(SUBMISSION_REGEX_KEYS, s['alternateLink'], s['courseWorkId'], ref_d, s['userId'], s['courseId']))
+                sub_list.append(RUBRIC.submission(SUBMISSION_REGEX_KEYS, s['alternateLink'], s['courseWorkId'], ref_d, s['userId'], s['courseId']))
+            else:
+                pass
+
 
 def writefile(name, content):
     save_path = "/Users/gg/NerdStuff/mastery-data-manager/logs"
@@ -194,20 +201,21 @@ ref_f = ref_r.replace("'", '"')
 ref_f = ref_f.replace('True', '"True"')
 ref_f = ref_f.replace('False', '"False"')
 
-if not exc.is_balanced(ref_f):
-    ref_f = exc.replace(ref_f)
-else:
-    pass
+
+ref_f = exc.replace(ref_f)
+
 
 writefile('ref_f', ref_f)
 ref_d = json.loads(ref_f)
 
+
 def pullcustom():
     batch_s.execute()
-    return(str(test_list))
+    return(str(sub_list))
 
 
-writefile('test_s_alpha', pullcustom())
+writefile('submissions', json.dumps(pullcustom()), sort_keys=True, indent=4)
+csv.fullconvert()
 
 
 
