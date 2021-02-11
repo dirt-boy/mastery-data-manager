@@ -145,6 +145,7 @@ def itersubmissions(resp):
     #print('SUBMISSIONS:\n')
     if 'studentSubmissions' in resp:
         print(resp)
+        writefile('debug-uid', str(resp['studentSubmissions']))
         for i, s in enumerate(resp['studentSubmissions']):
             #print(s['courseWorkId'])
             if(s['state'] == 'RETURNED'):
@@ -214,7 +215,8 @@ def pullcustom():
     return(str(sub_list))
 
 
-writefile('submissions', json.dumps(pullcustom()), sort_keys=True, indent=4)
+string = json.dumps(pullcustom(), sort_keys=True, indent=4)
+writefile('submissions', string)
 csv.fullconvert()
 
 

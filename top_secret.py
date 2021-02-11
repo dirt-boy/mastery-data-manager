@@ -8,6 +8,7 @@
 
 	},
 
+	#two-factor auth vv
 	{
 		'name': 'Brent Copple',
 		'school': 'OIHS',
@@ -16,6 +17,7 @@
 
 	},
 
+	#two-factor auth vv
 	{
 		'name': 'Brent Copple',
 		'school': 'SFIHS',
@@ -40,13 +42,16 @@
 
 	},
 
+		#pw not recognized
 	{
 		'name': 'Jessica Pena',
-		'school': 'Hudson HS',
+		'school': 'Cristo Rey NY',
 		'email': 'jepena@cristoreyny.org',
 		'password': 'A2xjnqAE#'
 
 	},
+
+	#formatting error
 
 	{
 		'name': 'Emily Garvey',
@@ -56,6 +61,8 @@
 
 	},
 
+
+	#invalid character
 	{
 		'name': 'Emily Rose Prats',
 		'school': 'BILA',
@@ -64,5 +71,21 @@
 
 	},
 
+
+	#empty???
+
+	{
+		'name': 'Shea Furey-King',
+		'school': 'ULC',
+		'email': 'CodeNation@UncommonLeadershipCharter.org',
+		'password': 'Dfcv3245$'
+	},
+
+	{
+		'name': 'Emily Rose Prats',
+		'school': 'Orchard',
+		'email': 'eprats@orchardcollegiateacademy.org',
+		'password': 'codenation'
+	},
 
 ]

@@ -76,9 +76,18 @@ def submission(regex_keys, url, cw_id, ref, uid, c_id):
     #print('URL: '+url+'\n')
     #print('GETTING GRADE... URL is: '+url+'\n')
     print('\nREGEX KEYS:\n'+str(regex_keys))
-    title = ref['courseWork'][cw_id]
-    user = ref['roster']['students'][uid]
-    course = ref['courses'][c_id]
+    try:
+        title = ref['courseWork'][cw_id]
+    except:
+        title = "Unknown CourseworkId "
+    try:
+        user = ref['roster']['students'][uid]
+    except:
+        user = "Unkown UID"
+    try:
+        course = ref['courses'][c_id]
+    except:
+        course = "Unknown CourseId"
     #print(title)
     
     #page_title = re.findall(page_title_regex, raw)
