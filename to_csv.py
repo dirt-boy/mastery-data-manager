@@ -74,11 +74,13 @@ def process(raw):
 def restructure(raw):
 	x = []
 	for i, g in enumerate(raw):
-		print(g)
+		print("x" * i)
+		#print(g)
 		for j, r in enumerate(raw[i]['grades']):
-			print('\n\n'+str(len(raw[i]['grades'])))
-			print('\n\n'+str(raw[i]['grades']))
-			print('\n\n'+str(g['titles'][j]))
+			print("\n")
+			#print('\n\n'+str(len(raw[i]['grades'])))
+			#print('\n\n'+str(raw[i]['grades']))
+			#print('\n\n'+str(g['titles'][j]))
 			x.append(
 				[g['courseWork'], g['titles'][j], "", g['grades'][j][:-2], g['grades'][j][0], g['user'], 'TRUE', g['course']]
 				)

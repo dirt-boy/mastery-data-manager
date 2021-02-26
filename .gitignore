@@ -9,3 +9,4 @@
 deprecated/**
 kubernetes/**
 logging-test/**
+data/**
