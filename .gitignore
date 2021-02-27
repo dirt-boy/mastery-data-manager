@@ -5,8 +5,17 @@
 *.png
 *.yaml
 *.yml
+
 !client_secret.json
 deprecated/**
 kubernetes/**
 logging-test/**
 data/**
+
+# ignore generated files
+*.pyc
+__pycache__/
+
+# ignore vim temporary files
+*.swp
+*.swo
