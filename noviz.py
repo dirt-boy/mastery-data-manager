@@ -1,11 +1,13 @@
-import os  
-from selenium import webdriver  
-from selenium.webdriver.common.keys import Keys  
-from selenium.webdriver.chrome.options import Options  
+"""Creates and manages headless chrome instance."""
+import os
+
+from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
+
 
 def get_driver():
 
-    chrome_options = Options()  
+    chrome_options = Options()
     chrome_options.add_argument("--headless")
     chrome_options.add_argument("--no-sandbox")
     chrome_options.add_argument("--disable-setuid-sandbox")

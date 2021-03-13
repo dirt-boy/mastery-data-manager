@@ -1,13 +1,14 @@
-
+"""Google API client"""
 from __future__ import print_function
-import pickle
+
 import os
-from pprint import pprint as pp
-from google_auth_oauthlib.flow import Flow, InstalledAppFlow
-from googleapiclient.discovery import build
-from google.auth.transport.requests import Request
-import pandas as pd
+import pickle
+
 import google_login as LOGIN
+from google.auth.transport.requests import Request
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+
 
 def Create_Service(client_secret_file, api_name, api_version, *scopes):
     print(client_secret_file, api_name, api_version, scopes, sep='-')
@@ -58,7 +59,7 @@ def Create_Service_No_Flow(client_secret_file, api_name, api_version, *scopes, d
             cred.refresh(Request())
         else:
             LOGIN.login()
-            
+
 
         with open('token.pickle', 'wb') as token:
             pickle.dump(cred, token)
@@ -70,4 +71,3 @@ def Create_Service_No_Flow(client_secret_file, api_name, api_version, *scopes, d
     except Exception as e:
         print(e)
         return None
-

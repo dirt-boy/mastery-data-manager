@@ -1,22 +1,19 @@
-from gAPI import Create_Service
-import json
-from pandas.io.json import json_normalize
-from googleapiclient.errors import HttpError
-from googleapiclient.http import BatchHttpRequest
-import page_util as pg
+"""Main logic file. Manages data pipeline."""
 import json
 import os
-from os import path
 import sys
+
+from gAPI import Create_Service
+
 sys.path.insert(1, 'logging-test')
-import makelogger as logger
-import httplib2shim
 import extract_data as RUBRIC
 import js2py
+import makelogger as logger
+
 js2py.translate_file('course_util.js', 'course_utiljs.py')
-from course_utiljs import course_utiljs
 import find_except as exc
 import to_csv as csv
+from course_utiljs import course_utiljs
 
 GCLOGGER = logger.get_logger(__name__)
 RUBRIC_REGEX_KEYS = RUBRIC.regex_gen(0)
@@ -42,7 +39,7 @@ def callback_c(request_id, response, exception):
         pass
     else:
         #GCLOGGER.info(response)
-        if(path.exists(str(request_id)+".json")):
+        if(os.path.exists(str(request_id)+".json")):
             pass
         else:
             #writefile(str(request_id), str(response))
@@ -60,7 +57,7 @@ def callback_cw(request_id, response, exception):
     else:
         #GCLOGGER.info(response)
         #print(response)
-        if(path.exists(str(request_id)+".json")):
+        if(os.path.exists(str(request_id)+".json")):
             pass
         else:
             #writefile(str(request_id), str(response))
@@ -76,7 +73,7 @@ def callback_s(request_id, response, exception):
     else:
         #GCLOGGER.info(response)
         #print(response)
-        if(path.exists(str(request_id)+".json")):
+        if(os.path.exists(str(request_id)+".json")):
             pass
         else:
             test_list.append(response)
@@ -166,7 +163,7 @@ def log_all(results):
         GCLOGGER.info(res)
 
 def format_all(results):
-    return courseutiljs.formatAll(resp)
+    return course_utiljs.formatAll(results)
 
 def courselist(resp):
     #get list of courses mapped to ids
@@ -218,6 +215,3 @@ def pullcustom():
 string = json.dumps(pullcustom(), sort_keys=True, indent=4)
 writefile('submissions', string)
 csv.fullconvert()
-
-
-

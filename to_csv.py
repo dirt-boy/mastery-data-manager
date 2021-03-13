@@ -1,16 +1,17 @@
-#raw data processor
+"""Raw data processor. Converts `submissions.json` to csv format."""
 
 #make new dict
 #{coursename: {coursework: {student: [grades]}, ..}, ..}
 
 #Get list of all unique course titles
-#get list of each 
+#get list of each
 
-import os
-from os import path
-import json
-import numpy as np
 import csv
+import json
+import os
+
+import numpy as np
+
 
 def unique(list):
 	x = np.array(list)
@@ -60,7 +61,7 @@ def pare(raw):
 			if j%2 == 0:
 				y.append(raw[i]['titles'][j])
 		x.append(y)
-	return x	
+	return x
 
 def zip(raw, pared):
 	for i, g in enumerate(raw):
@@ -98,12 +99,3 @@ def fullconvert():
 	return writecsv(restructured)
 
 fullconvert()
-
-
-
-	
-
-
-
-	
-	

@@ -1,8 +1,9 @@
-from tkinter import *
 from functools import partial
-import page_util as page
+from tkinter import *
+
 #import data_options as opts
 import course_util as course
+import page_util as page
 
 creds = page.get_login()
 
@@ -14,7 +15,7 @@ def validateLogin(username, password):
         print("Login successful. Retrieving Classroom Data...")
         course.pullall()
         return
-        
+
     else:
         print("Username/Password combination did not match credentials on file.")
         return
@@ -50,4 +51,3 @@ validateLogin = partial(validateLogin, username, password)
 loginButton = Button(tkWindow, text="Login", command=validateLogin).grid(row=4, column=0)
 
 tkWindow.mainloop()
-
