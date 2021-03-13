@@ -156,7 +156,7 @@ def itersubmissions(resp):
 
 
 def writefile(name, content):
-    save_path = "/Users/gg/NerdStuff/mastery-data-manager/logs"
+    save_path = os.path.abspath("logs")
     completename = os.path.join(save_path, str(name))
     with open(completename+".json", "w") as f:
         f.write(content)

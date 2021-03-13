@@ -17,7 +17,7 @@ def unique(list):
 	return np.unique(x)
 
 def read(file):
-	save_path = "/Users/gg/NerdStuff/mastery-data-manager/logs"
+	save_path = os.path.abspath("logs")
 	completename = os.path.join(save_path, str(file))
 	with open(completename, 'r') as f:
 		data = f.read()
