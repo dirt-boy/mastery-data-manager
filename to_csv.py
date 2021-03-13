@@ -87,7 +87,9 @@ def writecsv(restructured):
 		csvwriter = csv.writer(csvfile, delimiter=',')
 		csvwriter.writerows(restructured)
 
-def fullconvert():
+def fullconvert(raw=None):
+	if not raw:
+	    raw = read('submissions.json')
 	processed = process(raw)
 	restructured = restructure(processed)
 	return writecsv(restructured)
@@ -97,4 +99,4 @@ if os.path.exists('submissions.json'):
     classes = get_classes(raw)
     courseworks = get_courseworks(raw, classes)
     students = get_students(raw)
-    fullconvert()
+    fullconvert(raw)
