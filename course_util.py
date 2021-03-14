@@ -17,6 +17,11 @@ js2py.translate_file('course_util.js', 'course_utiljs.py')
 from course_utiljs import course_utiljs
 import find_except as exc
 import to_csv as csv
+from concurrent.futures import (
+    as_completed,
+    ThreadPoolExecutor
+)
+
 
 GCLOGGER = logger.get_logger(__name__)
 RUBRIC_REGEX_KEYS = RUBRIC.regex_gen(0)
@@ -145,14 +150,20 @@ def itersubmissions(resp):
     #print('SUBMISSIONS:\n')
     if 'studentSubmissions' in resp:
         print(resp)
-        writefile('debug-uid', str(resp['studentSubmissions']))
-        for i, s in enumerate(resp['studentSubmissions']):
-            #print(s['courseWorkId'])
-            if(s['state'] == 'RETURNED'):
-                test_list.append(RUBRIC.submission(SUBMISSION_REGEX_KEYS, s['alternateLink'], s['courseWorkId'], ref_d, s['userId'], s['courseId']))
-                sub_list.append(RUBRIC.submission(SUBMISSION_REGEX_KEYS, s['alternateLink'], s['courseWorkId'], ref_d, s['userId'], s['courseId']))
-            else:
-                pass
+        with ThreadPoolExecutor(max_workers=10) as executor:
+            futures = []
+            writefile('debug-uid', str(resp['studentSubmissions']))
+            for i, s in enumerate(resp['studentSubmissions']):
+                #print(s['courseWorkId'])
+                if(s['state'] == 'RETURNED'):
+                    futures.append(executor.submit(lambda: RUBRIC.submission(SUBMISSION_REGEX_KEYS, s['alternateLink'], s['courseWorkId'], ref_d, s['userId'], s['courseId'])))
+                else:
+                    pass
+            for future in as_completed(futures):
+                result = future.result()
+                test_list.append(result)
+                sub_list.append(result)
+
 
 
 def writefile(name, content):
