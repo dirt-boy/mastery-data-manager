@@ -47,11 +47,6 @@ def get_students(raw):
 		grade['user']
 	return students
 
-raw = read('submissions.json')
-classes = get_classes(raw)
-courseworks = get_courseworks(raw, classes)
-students = get_students(raw)
-
 def pare(raw):
 	x = []
 	for i, g in enumerate(raw):
@@ -92,18 +87,16 @@ def writecsv(restructured):
 		csvwriter = csv.writer(csvfile, delimiter=',')
 		csvwriter.writerows(restructured)
 
-def fullconvert():
+def fullconvert(raw=None):
+	if not raw:
+	    raw = read('submissions.json')
 	processed = process(raw)
 	restructured = restructure(processed)
 	return writecsv(restructured)
 
-fullconvert()
-
-
-
-	
-
-
-
-	
-	
+if os.path.exists('submissions.json'):
+    raw = read('submissions.json')
+    classes = get_classes(raw)
+    courseworks = get_courseworks(raw, classes)
+    students = get_students(raw)
+    fullconvert(raw)
