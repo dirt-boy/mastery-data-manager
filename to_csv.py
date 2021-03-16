@@ -18,7 +18,7 @@ def unique(list):
 	return np.unique(x)
 
 def read(file):
-	save_path = "/Users/gg/NerdStuff/mastery-data-manager/logs"
+	save_path = os.path.abspath("logs")
 	completename = os.path.join(save_path, str(file))
 	with open(completename, 'r') as f:
 		data = f.read()
@@ -47,11 +47,6 @@ def get_students(raw):
 	for i, grade in enumerate(raw):
 		grade['user']
 	return students
-
-raw = read('submissions.json')
-classes = get_classes(raw)
-courseworks = get_courseworks(raw, classes)
-students = get_students(raw)
 
 def pare(raw):
 	x = []
@@ -93,7 +88,9 @@ def writecsv(restructured):
 		csvwriter = csv.writer(csvfile, delimiter=',')
 		csvwriter.writerows(restructured)
 
-def fullconvert():
+def fullconvert(raw=None):
+	if not raw:
+	    raw = read('submissions.json')
 	processed = process(raw)
 	restructured = restructure(processed)
 	return writecsv(restructured)
