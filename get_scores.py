@@ -1,7 +1,9 @@
+"""Writes grade data to 'submission.html'."""
 import page_util as page
 
+
 def readsrc(url):
-    
+
     creds = page.get_login()
     html = page.get_page(*creds, url)
     #test

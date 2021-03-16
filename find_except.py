@@ -1,5 +1,6 @@
-#find out-of-place quotation marks
+"""Find out-of-place quotation marks."""
 import re
+
 
 def is_balanced(str):
 	c = str.count('"')
@@ -14,7 +15,3 @@ def replace(str):
 	repl = "'"
 	res = re.sub(pattern, repl, str)
 	return res
-
-
-
-

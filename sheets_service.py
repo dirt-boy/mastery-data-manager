@@ -1,10 +1,10 @@
-import pickle
+"""Sets up a service to connect with Google sheets."""
 import os
-from pprint import pprint as pp
-from google_auth_oauthlib.flow import Flow, InstalledAppFlow
-from googleapiclient.discovery import build
+import pickle
+
 from google.auth.transport.requests import Request
-import pandas as pd
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
 
 CLIENT_SECRET_FILE = 'client_secret.json'
 API_SERVICE_NAME = 'sheets'
@@ -26,7 +26,7 @@ def create_service(client_secret, api_service, api_version, scopes):
         else:
             flow = InstalledAppFlow.from_client_secrets_file(CLIENT_SECRET_FILE, SCOPES)
             cred = flow.run_local_server()
-        
+
         with open('token.pickle', 'wb') as token:
             pickle.dump(cred, token)
 

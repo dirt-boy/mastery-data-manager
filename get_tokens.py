@@ -1,11 +1,11 @@
+"""Collects all user tokens as directed in 'top_secret.py'."""
 import os
 import pickle
-from gAPI import Create_Service
+
+import google_login as LOGIN
 import noviz
 import selenium
-import google_login as LOGIN
-
-
+from gAPI import Create_Service
 
 CLIENT_SECRET_FILE = 'client_secret.json'
 API_SERVICE_NAME = 'classroom'
@@ -26,7 +26,7 @@ def delete_token():
 def gAPI_run(secrets, i):
 	svc = Create_Service(CLIENT_SECRET_FILE, API_SERVICE_NAME, API_VERSION, SCOPES)
 	driver = hook(secrets, i)
-	
+
 
 def hook(secrets, i):
 	#connect to existing chrome instance
@@ -64,8 +64,3 @@ def get_tokenlist():
 	return tokens
 
 get_tokenlist()
-
-
-
-
-

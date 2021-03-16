@@ -1,23 +1,24 @@
-#raw data processor
+"""Raw data processor. Converts `submissions.json` to csv format."""
 
 #make new dict
 #{coursename: {coursework: {student: [grades]}, ..}, ..}
 
 #Get list of all unique course titles
-#get list of each 
+#get list of each
 
-import os
-from os import path
-import json
-import numpy as np
 import csv
+import json
+import os
+
+import numpy as np
+
 
 def unique(list):
 	x = np.array(list)
 	return np.unique(x)
 
 def read(file):
-	save_path = "/Users/gg/NerdStuff/mastery-data-manager/logs"
+	save_path = os.path.abspath("logs")
 	completename = os.path.join(save_path, str(file))
 	with open(completename, 'r') as f:
 		data = f.read()
@@ -47,11 +48,6 @@ def get_students(raw):
 		grade['user']
 	return students
 
-raw = read('submissions.json')
-classes = get_classes(raw)
-courseworks = get_courseworks(raw, classes)
-students = get_students(raw)
-
 def pare(raw):
 	x = []
 	for i, g in enumerate(raw):
@@ -60,7 +56,7 @@ def pare(raw):
 			if j%2 == 0:
 				y.append(raw[i]['titles'][j])
 		x.append(y)
-	return x	
+	return x
 
 def zip(raw, pared):
 	for i, g in enumerate(raw):
@@ -92,18 +88,11 @@ def writecsv(restructured):
 		csvwriter = csv.writer(csvfile, delimiter=',')
 		csvwriter.writerows(restructured)
 
-def fullconvert():
+def fullconvert(raw=None):
+	if not raw:
+	    raw = read('submissions.json')
 	processed = process(raw)
 	restructured = restructure(processed)
 	return writecsv(restructured)
 
 fullconvert()
-
-
-
-	
-
-
-
-	
-	
