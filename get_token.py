@@ -1,10 +1,9 @@
-# get OauthToken
-import gAPI as g
-import shutil
-import os
-from os import path
+"""Gets the OAuth token."""
 import getpass
+import os
+import shutil
 
+import gAPI as g
 
 CLIENT_SECRET_FILE = 'client_secret.json'
 API_SERVICE_NAME = 'classroom'

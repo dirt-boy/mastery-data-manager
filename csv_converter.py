@@ -1,8 +1,8 @@
 #!/usr/bin/env python
-import pandas as pd
-import ast
-import course_util as c
 import json
+
+import course_util as c
+import pandas as pd
 
 course = c.pullall()
 course_d = course.replace("'", '"')
@@ -39,19 +39,13 @@ def getkey_by_val(course_d, key, name=None):
             #print(data[key])
             res.append(data[k])
     else:
-        
+
         #try lookup by val
         for i, k in enumerate(key):
-            
+
             val = list(data[k].keys())[list(data[k].values()).index(name)]
             print(val)
             res.append(data[k][str(val)])
     return res
 
 print(course_d)
-        
-
-
-        
-
-

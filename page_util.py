@@ -1,14 +1,17 @@
-from selenium import webdriver
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import os.path
-from os import path
-import time
-import requests
-import get_login as creds
+"""
+Handles Google account login through headless Chrome instance created by noviz.py
+"""
+
 import pickle
 import sys
+import time
+from os import path
+
+import get_login as creds
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support.ui import WebDriverWait
+
 sys.path.append('headless-chrome/')
 sys.path.append('headless-chrome/chromedriver')
 import noviz
@@ -46,7 +49,7 @@ def get_page(email, password, url):
     url = url
     name = make_name(url)
     try:
-        
+
         driver.get(url)
         #prt_scr("page1")
         email_phone = driver.find_element_by_xpath("//input[@id='Email']")
@@ -74,7 +77,7 @@ def get_page(email, password, url):
     except:
         pass
     time.sleep(5)
-    
+
     #prt_scr(str(url))
     html = driver.page_source
 
@@ -91,9 +94,3 @@ def get_src(name):
     html = driver.page_source
     with open(name+'.html', 'w') as o:
         o.write(html)
-
-
-    
-
-    
-

@@ -1,11 +1,12 @@
-import page_util as page
-import rubric_dict as keys
+"""Read data from rubric/submissions html."""
 import re
 import sys
+
+import page_util as page
+import rubric_dict as keys
+
 sys.path.insert(1, 'logging-test')
 import makelogger as logger
-
-
 
 GCLOGGER = logger.get_logger(__name__)
 
@@ -43,7 +44,7 @@ def rubric(regex_keys, url):
     if raw != None:
         #print("\nRAW:\n"+raw)
         #print(regex_keys[0][1])
-        
+
         try:
             #page.get_src('title-blank')
             #page.prt_scr('title-blank')
@@ -52,9 +53,9 @@ def rubric(regex_keys, url):
             descriptions = re.findall(regex_keys[2][1], raw)
             level_titles = re.findall(regex_keys[3][1], raw)
             point_values = re.findall(regex_keys[4][1], raw)
-        
+
             criteria = list(dict.fromkeys(criteria))
-        
+
             rubric = {}
             #print(title)
             rubric['title'] = title[0]
@@ -67,8 +68,8 @@ def rubric(regex_keys, url):
             print('Rubric not found.')
     else:
         return None
-        
-    
+
+
     #GCLOGGER.info(rubric)
     return rubric
 
@@ -89,7 +90,7 @@ def submission(regex_keys, url, cw_id, ref, uid, c_id):
     except:
         course = "Unknown CourseId"
     #print(title)
-    
+
     #page_title = re.findall(page_title_regex, raw)
     #print(page_title)
 
@@ -103,14 +104,8 @@ def submission(regex_keys, url, cw_id, ref, uid, c_id):
         #print('...')
     else:
         return "Non-Project"
-        
-    
+
+
     #GCLOGGER.info(rubric)
     #print("user: " + str(user) +'\n'+"grades: "+ str(criterion_grade))
     return {'course' : course, 'courseWork' : title, 'user' : user,  'grades' : criterion_grade, 'titles': criterion_title}
-
-    
-
-
-
-

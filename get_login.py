@@ -1,5 +1,7 @@
+"""Retrieves user login information."""
 import getpass
 import pickle
+
 
 def get_creds():
     email = input("email:")
@@ -14,5 +16,3 @@ def write_creds():
         credfile = pickle.dump(cred_r, creds)
         print(credfile)
     return credfile
-
-
