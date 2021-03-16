@@ -209,7 +209,7 @@ ref_d = json.loads(ref_f)
 
 def pullcustom():
     batch_s.execute()
-    return(str(sub_list))
+    return sub_list
 
 
 string = json.dumps(pullcustom(), sort_keys=True, indent=4)
