@@ -228,3 +228,4 @@ if __name__ == '__main__':
     fetcher = CourseFetcher()
     submissions = fetcher.fetch()
     write_submissions(submissions)
+

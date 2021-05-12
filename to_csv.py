@@ -52,10 +52,11 @@ def pare(raw):
 	x = []
 	for i, g in enumerate(raw):
 		y = []
-		for j, t in enumerate(raw[i]['titles']):
-			if j%2 == 0:
-				y.append(raw[i]['titles'][j])
-		x.append(y)
+		if type(raw[i]) == dict:
+			for j, t in enumerate(raw[i]['titles']):
+				if j%2 == 0:
+					y.append(raw[i]['titles'][j])
+			x.append(y)
 	return x
 
 def zip(raw, pared):
@@ -70,16 +71,13 @@ def process(raw):
 def restructure(raw):
 	x = []
 	for i, g in enumerate(raw):
-		print("x" * i)
-		#print(g)
-		for j, r in enumerate(raw[i]['grades']):
-			print("\n")
-			#print('\n\n'+str(len(raw[i]['grades'])))
-			#print('\n\n'+str(raw[i]['grades']))
-			#print('\n\n'+str(g['titles'][j]))
-			x.append(
-				[g['courseWork'], g['titles'][j], "", g['grades'][j][:-2], g['grades'][j][0], g['user'], 'TRUE', g['course']]
-				)
+		print(type(raw[i]))
+		if type(raw[i]) == dict:
+			for j, r in enumerate(raw[i]['grades']):
+				print("\n")
+				x.append(
+					[g['courseWork'], g['titles'][j], "", g['grades'][j][:-2], g['grades'][j][0], g['user'], 'TRUE', g['course']]
+					)
 	return x
 
 def writecsv(restructured):
@@ -95,4 +93,7 @@ def fullconvert(raw=None):
 	restructured = restructure(processed)
 	return writecsv(restructured)
 
-fullconvert()
+
+
+if __name__ == "__main__":
+	fullconvert()
