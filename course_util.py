@@ -206,11 +206,11 @@ ref_r = pullbase()
 #need script to replace only delimiting single quotes
 #check stack overflow?????
 
-
+"""
 ref_f = ref_r.replace("'", '"')
 ref_f = ref_f.replace('True', '"True"')
 ref_f = ref_f.replace('False', '"False"')
-
+"""
 
 ref_f = exc.replace(ref_f)
 
