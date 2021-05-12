@@ -1,4 +1,0 @@
-#contents of ./patterns
-
-CLASS_ID = (?<='id': ')\d*[^']
-CLASS_NAME = (?<='name': ')[^']*
