@@ -9,22 +9,16 @@
 import csv
 import json
 import os
+from datetime import date
 
 import numpy as np
-
+FILEDIR = "logs"
+HEADERS = "title, criteria_tag, criteria_content_description, criteria_content_level_title, criteria_content_point_value, student, flag, class\n"
+DATE = date.today().strftime('%m_%d_%y')
 
 def unique(list):
 	x = np.array(list)
 	return np.unique(x)
-
-def read(file):
-	save_path = os.path.abspath("logs")
-	completename = os.path.join(save_path, str(file))
-	with open(completename, 'r') as f:
-		data = f.read()
-	data_r = data.replace("'", '"')
-	data_j = json.loads(data)
-	return data_j
 
 def get_classes(raw):
 	classes = []
@@ -59,39 +53,32 @@ def pare(raw):
 			x.append(y)
 	return x
 
-def zip(raw, pared):
-	for i, g in enumerate(raw):
-		for j, t in enumerate(pared):
-			raw[i]['titles'] = pared[j]
-	return raw
 
-def process(raw):
-	return zip(raw, pare(raw))
-
-def restructure(raw):
-	x = []
-	for i, g in enumerate(raw):
-		print(type(raw[i]))
-		if type(raw[i]) == dict:
-			for j, r in enumerate(raw[i]['grades']):
-				print("\n")
-				x.append(
-					[g['courseWork'], g['titles'][j], "", g['grades'][j][:-2], g['grades'][j][0], g['user'], 'TRUE', g['course']]
-					)
-	return x
-
-def writecsv(restructured):
-	restructured[:0] = [['title','criteria__tag','criteria__content__description','criteria__content__level__title','criteria__content__point__value','student','flag','class']]
-	with open('grades.csv', 'w') as csvfile:
-		csvwriter = csv.writer(csvfile, delimiter=',')
-		csvwriter.writerows(restructured)
-
-def fullconvert(raw=None):
-	if not raw:
-	    raw = read('submissions.json')
-	processed = process(raw)
-	restructured = restructure(processed)
-	return writecsv(restructured)
+def fullconvert():
+	aggregate = []
+	csv = ""
+	for file in os.listdir(FILEDIR):
+		if "submissions" in str(file):
+			with open(FILEDIR+"/"+file, "r") as f:
+				try:
+					raw = f.read()
+					name = str(file)
+					name = name[:len(name)-5]+".csv"
+					raw = json.loads(raw)
+					aggregate.append(raw)
+					#print("Data for: %s" % name, ": \n", raw)
+				except:
+					print("Error occurred.")
+	for i, chunk in enumerate(aggregate):
+		if i == 0:
+			csv += HEADERS
+		for j, grades in enumerate(chunk):
+			for j, title in enumerate(grades["titles"]):
+				if j < len(grades["grades"]):
+					row = grades["courseWork"]+", "+title+" , ,"+grades["grades"][j]+" ,"+grades["grades"][j][:1]+" ,"+grades["user"]+" , TRUE,"+grades["course"]+"\n"
+					csv += row
+	with open("results/grades_"+DATE+".csv", "w") as f:
+		f.write(csv)
 
 
 

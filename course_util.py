@@ -8,7 +8,7 @@ import sys
 sys.path.insert(1, 'logging-test')
 import extract_data as RUBRIC
 import js2py
-import makelogger as logger
+
 
 js2py.translate_file('course_util.js', 'course_utiljs.py')
 import find_except as exc
@@ -21,7 +21,7 @@ from concurrent.futures import (
 from course_utiljs import course_utiljs
 
 
-GCLOGGER = logger.get_logger(__name__)
+
 RUBRIC_REGEX_KEYS = RUBRIC.regex_gen(0)
 SUBMISSION_REGEX_KEYS = RUBRIC.regex_gen(1)
 
@@ -39,7 +39,7 @@ SUBMISSION_FIELDS = ['studentSubmissions/id','studentSubmissions/assignedGrade',
 
 
 def writefile(name, content):
-    save_path = os.path.abspath("logs")
+    save_path = os.path.abspath("results")
     completename = os.path.join(save_path, str(name))
     with open(completename+".json", "w") as f:
         f.write(content)
@@ -48,7 +48,6 @@ def write_submissions(submissions, filename_suffix=''):
     # Save submission JSON blob to `submissions.json`
     string = json.dumps(submissions, sort_keys=True, indent=4)
     writefile('submissions' + filename_suffix, string)
-    csv.fullconvert()
 
 def log_all(results):
     for res, l in enumerate(results):
@@ -157,7 +156,7 @@ class CourseFetcher:
                 #print(resp)
                 with ThreadPoolExecutor(max_workers=10) as executor:
                     futures = []
-                    writefile('debug-uid', str(response['studentSubmissions']))
+                    #writefile('debug-uid', str(response['studentSubmissions']))
                     for i, s in enumerate(response['studentSubmissions']):
                         #print(s['courseWorkId'])
                         if(s['state'] == 'RETURNED'):

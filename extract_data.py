@@ -6,9 +6,9 @@ import page_util as page
 import rubric_dict as keys
 
 sys.path.insert(1, 'logging-test')
-import makelogger as logger
 
-GCLOGGER = logger.get_logger(__name__)
+
+
 
 creds = page.get_login()
 

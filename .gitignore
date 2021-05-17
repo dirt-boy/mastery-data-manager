@@ -12,6 +12,7 @@ kubernetes/**
 logging-test/**
 data/**
 logs/**
+results/**
 
 # ignore generated files
 *.pyc
