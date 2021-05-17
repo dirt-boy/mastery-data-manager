@@ -77,7 +77,7 @@ def fullconvert():
 				if j < len(grades["grades"]):
 					row = grades["courseWork"]+", "+title+" , ,"+grades["grades"][j]+" ,"+grades["grades"][j][:1]+" ,"+grades["user"]+" , TRUE,"+grades["course"]+"\n"
 					csv += row
-	with open("results/grades_"+DATE+".csv", "w") as f:
+	with open("results/grades.csv", "w") as f:
 		f.write(csv)
 
 
