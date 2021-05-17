@@ -15,10 +15,14 @@ test = gsheets.open_by_key(TEST)
 
 csv = open("results/grades.csv", "r").read()
 
-#ugh now i need to convert the csv into, like, an http request... list of rows (lists)
 
 
-def export():
+def csvToList(csv):
+	csv = csv.split('\n')
+	csv = [item.split(',') for item in csv]	
+	return csv
+
+def export(csv):
 	#aggregate.run()
 	test.values_update(
 	    'RAW DATA!A1',
@@ -26,9 +30,11 @@ def export():
 	        'valueInputOption': 'USER_ENTERED'
 	    },
 	    body={
-	        'values': [['HELLO']]
+	        'values': csv
 	    }
 	)
 
 if __name__ == '__main__':
-	export()
+	csv = csvToList(csv)
+	export(csv)
+	
