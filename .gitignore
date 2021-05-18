@@ -13,6 +13,8 @@ logging-test/**
 data/**
 logs/**
 results/**
+lib/**
+bin/**
 
 # ignore generated files
 *.pyc
