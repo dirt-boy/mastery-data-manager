@@ -76,7 +76,7 @@ def rubric(regex_keys, url):
 def submission(regex_keys, url, cw_id, ref, uid, c_id):
     #print('URL: '+url+'\n')
     #print('GETTING GRADE... URL is: '+url+'\n')
-    print('\nREGEX KEYS:\n'+str(regex_keys))
+    #print('\nREGEX KEYS:\n'+str(regex_keys))
     try:
         title = ref['courseWork'][cw_id]
     except:

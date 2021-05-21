@@ -25,14 +25,15 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes, token_pat
         A Resource object with methods for interacting with the service.
 
     """
-    print(client_secret_file, api_name, api_version, scopes, sep='-')
+    print(client_secret_file, api_name, api_version, scopes, token_path, sep='-')
     os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
     cred = None
 
     # If we already have a token, use that instead of making the user log in
     if os.path.exists(token_path):
         with open(token_path, 'rb') as token:
-            cred = pickle.load(token)
+            print("\ntoken path is: ", token_path, "\n")
+            cred = pickle.loads(token.read())
 
     # If there are no (valid) credentials available, let the user log in.
     if not cred or not cred.valid:
