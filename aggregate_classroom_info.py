@@ -1,12 +1,16 @@
 import json
 import os
-from gAPI import Create_Service
+from gAPI import Create_Service_Direct
 from course_util import (CourseFetcher, write_submissions, writefile)
 from concurrent.futures import (
     as_completed,
     ThreadPoolExecutor
 )
 import to_csv
+from copy import copy
+import pickle
+import uuid
+
 
 TOKEN_DIR = "data/tokens"
 CLIENT_SECRET_FILE = 'client_secret.json'
@@ -18,29 +22,24 @@ SERVICE_ACCOUNT_PATH = "/Users/gg/NerdStuff/mastery-data-manager/data/etc/gsprea
 
 def get_classroom_data(token):
     print("\n-------------- Fetching classroom data with %s ----------------" % token)
-
     # Fetch all submissions that are accessible with the specified token
-    try:
-        classroom = Create_Service(CLIENT_SECRET_FILE, API_SERVICE_NAME, API_VERSION, SCOPES, token_path=os.path.join(TOKEN_DIR, token))
-        fetcher = CourseFetcher(classroom=classroom)
-        submissions = fetcher.fetch()
+    classroom = Create_Service_Direct(CLIENT_SECRET_FILE, API_SERVICE_NAME, API_VERSION, SCOPES, token=token)
+    fetcher = CourseFetcher(classroom=classroom)
+    submissions = fetcher.fetch()
 
-    # Write the submissions to a token-suffixed file for validation
-        write_submissions(submissions, filename_suffix=os.path.splitext(os.path.basename(token))[0])
-        return submissions
-    except:
-        print("Could not fetch classroom data.")
-        pass
+# Write the submissions to a token-suffixed file for validation
+    suffix = str(uuid.uuid4())
+    write_submissions(submissions, filename_suffix=suffix[:8])
+    return submissions
 
 def run():
-    course_info = {}
+    tokens = unpickler()
     with ThreadPoolExecutor(max_workers=5) as executor:
         futures = []
-        for token in os.listdir(TOKEN_DIR):
-            print(os.path.join(TOKEN_DIR, token))
+        for token in tokens:
+            print("using following token: ", str(token))
             future = executor.submit(lambda: get_classroom_data(token))
-            futures.append(future)
-                
+            futures.append(future)  
             # Aggregate all of the submissions from the different tokens
         all_submissions = []
         for future in as_completed(futures):
@@ -50,6 +49,24 @@ def run():
             all_submissions += submissions
 
     to_csv.fullconvert()
+
+
+def unpickle(token):
+    return pickle.loads(open("data/tokens/"+str(token), "rb").read())
+
+def unpickler():
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        futures = []
+        for token in os.listdir(TOKEN_DIR):
+            future = executor.submit(lambda: unpickle(token))
+            futures.append(future)
+        all_tokens = []
+        for future in as_completed(futures):
+            t = future.result()
+            all_tokens.append(t)
+    return all_tokens
+                
+       
 
 
 if __name__ == '__main__':

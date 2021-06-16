@@ -67,7 +67,7 @@ def rubric(regex_keys, url):
         except:
             print('Rubric not found.')
     else:
-        return None
+        return str(None)
 
 
     #GCLOGGER.info(rubric)

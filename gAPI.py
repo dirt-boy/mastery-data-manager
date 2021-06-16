@@ -54,6 +54,17 @@ def Create_Service(client_secret_file, api_name, api_version, *scopes, token_pat
         print(e)
         return None
 
+def Create_Service_Direct(client_secret_file, api_name, api_version, *scopes, token):
+    os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'
+    try:
+        service = build(api_name, api_version, credentials=token)
+        print(api_name, 'service created succesfully')
+        return service
+    except Exception as e:
+        print(e)
+        return None
+
+
 def Create_Service_No_Flow(client_secret_file, api_name, api_version, *scopes, driver, secret):
     print(client_secret_file, api_name, api_version, scopes, sep='-')
     os.environ['OAUTHLIB_RELAX_TOKEN_SCOPE'] = '1'

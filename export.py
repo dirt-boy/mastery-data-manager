@@ -43,7 +43,7 @@ def split(csv, dataList):
 	return dataset
 
 def export(csv, worksheet, sheet):
-	#aggregate.run()
+	aggregate.run()
 	worksheet.values_update(
 	    sheet,
 	    params={
