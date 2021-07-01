@@ -47,5 +47,3 @@ def getkey_by_val(course_d, key, name=None):
             print(val)
             res.append(data[k][str(val)])
     return res
-
-print(course_d)
