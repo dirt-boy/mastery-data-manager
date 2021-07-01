@@ -1,0 +1,31 @@
+*.csv
+*.json
+*.html
+*.png
+*.yaml
+*.yml
+*.log
+
+!client_secret.json
+deprecated/**
+kubernetes/**
+logging-test/**
+data/**
+logs/**
+results/**
+lib/**
+bin/**
+
+# ignore generated files
+*.pyc
+__pycache__/
+.DS_Store
+course_utiljs.py
+
+# ignore vim temporary files
+*.swp
+*.swo
+
+# secret files
+*.pickle
+top_secret.py
